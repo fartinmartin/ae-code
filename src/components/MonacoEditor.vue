@@ -3,7 +3,11 @@
 </template>
 
 <script>
-import * as monaco from "monaco-editor";
+import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
+
+// const require = cep_node.require || require;
+const fs = require("fs");
+const path = require("path");
 
 // const typeVersion = {
 //   // https://github.com/pravdomil/types-for-adobe
@@ -29,7 +33,7 @@ export default {
     },
     language: {
       type: String,
-      default: "javascript",
+      default: "typescript",
     },
     options: Object,
     diffEditor: {
@@ -52,41 +56,41 @@ export default {
 
   data: () => ({
     editor: null, // will hold refernce to monaco editor instance
+    host: null,
+    types: {
+      path: path.join(__dirname, "src/host/AEFT/index.d.ts"), // soon to be: `src/host/${this.host}/index.d.ts`
+      definitions: "",
+    },
   }),
 
   computed: {
     style() {
       return {
-        width: !/^\d+$/.test(this.width) ? this.width : `${this.width}px`,
-        height: !/^\d+$/.test(this.height) ? this.height : `${this.height}px`,
+        width: this.width.match(/^\d+$/) ? `${this.width}px` : this.width,
+        height: this.height.match(/^\d+$/) ? `${this.height}px` : this.height,
       };
     },
-    // hostApp() {
-    //   return window.__adobe_cep__
-    //     ? JSON.parse(window.__adobe_cep__.getHostEnvironment()).appName
-    //     : "browser";
-    // },
-    // rootPath() {
-    //   return window.__adobe_cep__
-    //     ? decodeURI(window.__adobe_cep__.getSystemPath("extension")).replace(
-    //         /file:\/{1,}/,
-    //         ""
-    //       )
-    //     : "browser";
-    // },
-    // typesPath() {
-    //   return `/node_modules/types-for-adobe/${this.hostApp}/${
-    //     typeVersion[this.hostApp]
-    //   }/index.d.ts`;
-    // },
   },
 
   mounted() {
+    this.host = JSON.parse(window.__adobe_cep__.getHostEnvironment()).appName;
     this.initMonaco();
   },
 
   methods: {
-    initMonaco() {
+    getAdobeTypes() {
+      return new Promise((resolve, reject) => {
+        // read type definition file as a stream: https://stackoverflow.com/a/46801928
+        const readStream = fs.createReadStream(this.types.path, "utf8");
+        readStream.on("error", (error) => reject(error));
+        readStream.on("data", (chunk) => (this.types.definitions += chunk));
+        readStream.on("end", () => resolve(this.types.definitions));
+      });
+    },
+
+    async initMonaco() {
+      await this.getAdobeTypes();
+
       const options = {
         // https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.ieditorconstructionoptions.html
         value: this.value,
@@ -95,40 +99,25 @@ export default {
         ...this.options,
       };
 
+      // ⚠️ https://github.com/Microsoft/monaco-editor/issues/61#issuecomment-236697130
       // compiler options
+
       monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
-        target: monaco.languages.typescript.ScriptTarget.ES6,
+        noLib: true,
         allowNonTsExtensions: true,
+        target: monaco.languages.typescript.ScriptTarget.CommonJS, // for adobe .jsx
+        // target: 1,
+        // allowJs: true,
+        // noEmit: true,
       });
 
-      // extra libraries
-      monaco.languages.typescript.javascriptDefaults.addExtraLib(
-        [
-          "declare class Facts {",
-          "    /**",
-          "     * Returns the next fact",
-          "     */",
-          "    static next():string",
-          "}",
-        ].join("\n"),
-        "filename/facts.d.ts"
-      );
-
       // ⚠️ https://github.com/Microsoft/monaco-editor/issues/61#issuecomment-236697130
-      // monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
-      //   // target: 1,
-      //   allowNonTsExtensions: true,
-      //   target: monaco.languages.typescript.ScriptTarget.CommonJS,
-      //   noLib: true,
-      //   allowJs: true,
-      //   noEmit: true,
-      // });
-
       // add adobe types
-      // monaco.languages.typescript.javascriptDefaults.addExtraLib(
-      //   this.typesPath, // need to get contents of file
-      //   this.typesPath // optional file path eg: "types-for-adobe/AfterEffects/2018"
-      // );
+
+      monaco.languages.typescript.javascriptDefaults.addExtraLib(
+        this.typesDefinitions, // need to get contents of file
+        this.typesPath // optional file path eg: "types-for-adobe/AfterEffects/2018"
+      );
 
       if (this.diffEditor) {
         this.editor = monaco.editor.createDiffEditor(this.$el, options);
@@ -147,11 +136,9 @@ export default {
       } else {
         this.editor = monaco.editor.create(this.$el, options);
       }
-
-      console.log(this.editor._configuration);
     },
 
-    // resize
+    // handle resize
   },
 
   beforeDestroy() {
