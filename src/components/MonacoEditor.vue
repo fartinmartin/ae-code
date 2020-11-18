@@ -5,20 +5,8 @@
 <script>
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 
-// const require = cep_node.require || require;
 const fs = require("fs");
 const path = require("path");
-
-// const typeVersion = {
-//   // https://github.com/pravdomil/types-for-adobe
-//   // Animate: 2013,
-//   AEFT: 2018,
-//   AUDT: 2018,
-//   IDSN: 2018,
-//   ILST: 2015.3,
-//   PHXS: 2015.5,
-//   PPRO: 2018,
-// };
 
 export default {
   props: {
@@ -115,8 +103,8 @@ export default {
       // add adobe types
 
       monaco.languages.typescript.javascriptDefaults.addExtraLib(
-        this.typesDefinitions, // need to get contents of file
-        this.typesPath // optional file path eg: "types-for-adobe/AfterEffects/2018"
+        this.types.definitions, // need to get contents of file
+        this.types.path // optional file path eg: "types-for-adobe/AfterEffects/2018"
       );
 
       if (this.diffEditor) {
