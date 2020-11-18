@@ -80,10 +80,23 @@ export default {
       await this.getAdobeTypes();
 
       const options = {
-        // https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.ieditorconstructionoptions.html
+        // any option from: https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.ieditorconstructionoptions.html
+        // ...plus `tabSize`, added so that user could edit 👉 tabSize is updated via `getModel().updateOptions()`: https://github.com/microsoft/monaco-editor/issues/1859
+
+        // required
         value: this.value,
         theme: this.theme,
         language: this.language,
+
+        // opinionated defaults
+        tabSize: 4, // see note above
+        scrollBeyondLastLine: false,
+        lineNumbersMinChars: 4,
+        autoIndent: true,
+        formatOnPaste: true,
+        formatOnType: true,
+
+        // user defined
         ...this.options,
       };
 
@@ -124,6 +137,8 @@ export default {
       } else {
         this.editor = monaco.editor.create(this.$el, options);
       }
+
+      this.editor.getModel().updateOptions({ tabSize: this.options.tabSize });
     },
 
     // handle resize

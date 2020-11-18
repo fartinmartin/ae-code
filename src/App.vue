@@ -1,16 +1,7 @@
 <template>
   <div id="app">
     <bombino-panel>
-      <monaco-editor v-model="code" :options="{ fontSize: '16px' }" />
-      <!-- <monaco-editor
-        ref="editor"
-        width="800"
-        height="500"
-        theme="vs-dark"
-        v-model="code"
-        :language="language"
-        :options="options"
-      /> -->
+      <monaco-editor v-model="code" :options="options" />
     </bombino-panel>
     <bombino-menus refresh debug />
   </div>
@@ -19,6 +10,8 @@
 <script>
 import { Menus, Panel } from "lokney";
 import MonacoEditor from "./components/MonacoEditor";
+
+// TODO: tabs? https://github.com/Microsoft/monaco-editor/issues/604#issuecomment-344214706
 
 export default {
   name: "App",
@@ -32,11 +25,7 @@ export default {
     language: "javascript",
     options: {
       fontSize: "16px",
-      scrollBeyondLastLine: false,
-      lineNumbersMinChars: 4,
-      autoIndent: true,
-      formatOnPaste: true,
-      formatOnType: true,
+      tabSize: "2",
     },
   }),
 };
