@@ -10,7 +10,6 @@ const path = require("path");
 
 export default {
   props: {
-    original: String,
     value: {
       type: String,
       required: true,
@@ -21,9 +20,10 @@ export default {
     },
     language: {
       type: String,
-      default: "typescript",
+      default: "javascript",
     },
     options: Object,
+    original: String,
     diffEditor: {
       type: Boolean,
       default: false,
@@ -104,12 +104,9 @@ export default {
       // compiler options
 
       monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
-        noLib: true,
-        allowNonTsExtensions: true,
+        noLib: true, // remove all hints/auto-completions (no need for HTML hints etc.)
+        allowNonTsExtensions: true, // at hints to .js files!
         target: monaco.languages.typescript.ScriptTarget.CommonJS, // for adobe .jsx
-        // target: 1,
-        // allowJs: true,
-        // noEmit: true,
       });
 
       // ⚠️ https://github.com/Microsoft/monaco-editor/issues/61#issuecomment-236697130
@@ -141,7 +138,46 @@ export default {
       this.editor.getModel().updateOptions({ tabSize: this.options.tabSize });
     },
 
-    // handle resize
+    // TODO: TABS (including a everpresent options/settings tab, or maybe it is accessivle via context menu)
+    // https://github.com/Microsoft/monaco-editor/issues/604#issuecomment-344214706
+    // also, where do we want to store tabs? both literally (as data) and as state 🤔
+
+    // addTab() {
+    //   // const tab = monaco.editor.createModel(...);
+    //   // this.switchTab(tab);
+    // },
+
+    // closeTab() {
+    //   // editorInstance.saveViewState();
+    //   // this.switchTab(this.tabs[0]) or something...
+    // },
+
+    // switchTab() {
+    //   // editorInstance.setModel(modelInstance)
+    //   // editorInstance.restoreViewState()
+    // },
+
+    // TODO: EVENTS
+    // handle window resize
+    // listen for `del` keypress
+    // set shortcut for formating (maybe just change the defaul, it is already in context menu)
+    // cmd + enter = run this code
+    // cmd + s = save to file
+    // cmd + r = reload extension?
+
+    // TODO: FILESYSTEM STUFF
+
+    // compileCode() {
+    //   // return compiledCode;
+    // },
+
+    // saveFile() {
+    //   // data = this.compileCode();
+    //   fs.writeFile(this.fileName, this.code, (error) => {
+    //     error && console.log(error);
+    //     console.log("[ae-code] File saved!");
+    //   });
+    // },
   },
 
   beforeDestroy() {

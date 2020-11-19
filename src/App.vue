@@ -11,8 +11,6 @@
 import { Menus, Panel } from "lokney";
 import MonacoEditor from "./components/MonacoEditor";
 
-// TODO: tabs? https://github.com/Microsoft/monaco-editor/issues/604#issuecomment-344214706
-
 export default {
   name: "App",
   components: {
