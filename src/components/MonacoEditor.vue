@@ -1,14 +1,16 @@
 <template>
-  <div :style="style" />
+  <div style="width: 100%; height: 100%;" />
 </template>
 
 <script>
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 
 const fs = require("fs");
-const path = require("path");
+const path = require("path"); // https://shapeshed.com/writing-cross-platform-node/#use-the-os-module-for-more-control
 
 export default {
+  name: "MonacoEditor",
+
   props: {
     value: {
       type: String,
@@ -44,24 +46,13 @@ export default {
 
   data: () => ({
     editor: null, // will hold refernce to monaco editor instance
-    host: null,
     types: {
-      path: path.join(__dirname, "src/host/AEFT/index.d.ts"), // soon to be: `src/host/${this.host}/index.d.ts`
+      path: path.join(__dirname, "src/host/AEFT/index.d.ts"), // soon to be: `src/host/${this.$host.appName}/index.d.ts` // also, is this compatible with windows?
       definitions: "",
     },
   }),
 
-  computed: {
-    style() {
-      return {
-        width: this.width.match(/^\d+$/) ? `${this.width}px` : this.width,
-        height: this.height.match(/^\d+$/) ? `${this.height}px` : this.height,
-      };
-    },
-  },
-
   mounted() {
-    this.host = JSON.parse(window.__adobe_cep__.getHostEnvironment()).appName;
     this.initMonaco();
   },
 
@@ -87,6 +78,7 @@ export default {
         value: this.value,
         theme: this.theme,
         language: this.language,
+        automaticLayout: true, // this is how monaco handles responsiveness/resizing
 
         // opinionated defaults
         tabSize: 4, // see note above
@@ -106,7 +98,7 @@ export default {
       monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
         noLib: true, // remove all hints/auto-completions (no need for HTML hints etc.)
         allowNonTsExtensions: true, // at hints to .js files!
-        target: monaco.languages.typescript.ScriptTarget.CommonJS, // for adobe .jsx
+        target: monaco.languages.typescript.ScriptTarget.CommonJS, // for adobe .jsx, i am assuming this is only necessary if setting language to typescript (otherwise we are compiling with babel in App.vue)
       });
 
       // ⚠️ https://github.com/Microsoft/monaco-editor/issues/61#issuecomment-236697130
@@ -116,6 +108,9 @@ export default {
         this.types.definitions, // need to get contents of file
         this.types.path // optional file path eg: "types-for-adobe/AfterEffects/2018"
       );
+
+      // ⚠️ https://github.com/Hennamann/ExtendScript-for-Visual-Studio-Code
+      // add syntax highlighting? seems unnecessary, as extendscript is pretty close to javascript, right?
 
       if (this.diffEditor) {
         this.editor = monaco.editor.createDiffEditor(this.$el, options);
@@ -138,46 +133,69 @@ export default {
       this.editor.getModel().updateOptions({ tabSize: this.options.tabSize });
     },
 
-    // TODO: TABS (including a everpresent options/settings tab, or maybe it is accessivle via context menu)
-    // https://github.com/Microsoft/monaco-editor/issues/604#issuecomment-344214706
-    // also, where do we want to store tabs? both literally (as data) and as state 🤔
+    // TODO: CUSTOM ACTIONS/COMMANDS VIA addAction/addCommand
+    // https://github.com/Microsoft/monaco-editor/issues/25
 
-    // addTab() {
-    //   // const tab = monaco.editor.createModel(...);
-    //   // this.switchTab(tab);
-    // },
+    addActions() {
+      // options/settings, save, save-as, open file, close file, run code, run selected code, newfile, reload
+      // this.editor.addAction({
+      //   id: "save-as",
+      //   label: "Save As...",
+      //   precondition: null,
+      //   keybindings: [
+      //     monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.KEY_S,
+      //   ],
+      //   keybindingContext: null,
+      //   contextMenuGroupId: "io",
+      //   contextMenuOrder: 1.7,
+      //   run: (ed) => console.log(ed),
+      // });
+    },
 
-    // closeTab() {
-    //   // editorInstance.saveViewState();
-    //   // this.switchTab(this.tabs[0]) or something...
-    // },
-
-    // switchTab() {
-    //   // editorInstance.setModel(modelInstance)
-    //   // editorInstance.restoreViewState()
-    // },
+    addCommand() {
+      // next tab, prev tab
+    },
 
     // TODO: EVENTS
-    // handle window resize
-    // listen for `del` keypress
-    // set shortcut for formating (maybe just change the defaul, it is already in context menu)
+
     // cmd + enter = run this code
     // cmd + s = save to file
     // cmd + r = reload extension?
 
     // TODO: FILESYSTEM STUFF
 
-    // compileCode() {
-    //   // return compiledCode;
-    // },
+    compileCode() {
+      // return compiledCode;
+    },
 
-    // saveFile() {
-    //   // data = this.compileCode();
-    //   fs.writeFile(this.fileName, this.code, (error) => {
-    //     error && console.log(error);
-    //     console.log("[ae-code] File saved!");
-    //   });
-    // },
+    saveFile() {
+      // data = this.compileCode();
+      fs.writeFile(this.fileName, this.code, (error) => {
+        error && console.log(error);
+        console.log("[ae-code] File saved!");
+      });
+    },
+
+    // TODO: TABS (including an ever-present options/settings tab, or maybe it is accessivle via context menu)
+    // https://github.com/Microsoft/monaco-editor/issues/604#issuecomment-344214706
+    // also, where do we want to store tabs? both literally (as data) and as state 🤔
+    // i think this should live in a <tab-bar/> component in App.vue and should emit the changes
+    // for this.editor to react to and change the model (or, instead of models, do we simplify and just swap this.code data 🤔)
+
+    addTab() {
+      // const tab = monaco.editor.createModel(...);
+      // this.switchTab(tab);
+    },
+
+    closeTab() {
+      // editorInstance.saveViewState();
+      // this.switchTab(this.tabs[0]) or something...
+    },
+
+    switchTab() {
+      // editorInstance.setModel(modelInstance)
+      // editorInstance.restoreViewState()
+    },
   },
 
   beforeDestroy() {
