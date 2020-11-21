@@ -25,11 +25,6 @@ export default {
       default: "javascript",
     },
     options: Object,
-    original: String,
-    diffEditor: {
-      type: Boolean,
-      default: false,
-    },
     width: {
       type: [String, Number],
       default: "100%",
@@ -112,24 +107,7 @@ export default {
       // ⚠️ https://github.com/Hennamann/ExtendScript-for-Visual-Studio-Code
       // add syntax highlighting? seems unnecessary, as extendscript is pretty close to javascript, right?
 
-      if (this.diffEditor) {
-        this.editor = monaco.editor.createDiffEditor(this.$el, options);
-        const originalModel = monaco.editor.createModel(
-          this.original,
-          this.language
-        );
-        const modifiedModel = monaco.editor.createModel(
-          this.value,
-          this.language
-        );
-        this.editor.setModel({
-          original: originalModel,
-          modified: modifiedModel,
-        });
-      } else {
-        this.editor = monaco.editor.create(this.$el, options);
-      }
-
+      this.editor = monaco.editor.create(this.$el, options);
       this.editor.getModel().updateOptions({ tabSize: this.options.tabSize });
     },
 
