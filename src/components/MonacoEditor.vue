@@ -104,30 +104,59 @@ export default {
         this.types.path // optional file path eg: "types-for-adobe/AfterEffects/2018"
       );
 
-      // ⚠️ https://github.com/Hennamann/ExtendScript-for-Visual-Studio-Code
-      // add syntax highlighting? seems unnecessary, as extendscript is pretty close to javascript, right?
-
       this.editor = monaco.editor.create(this.$el, options);
       this.editor.getModel().updateOptions({ tabSize: this.options.tabSize });
+
+      this.addActions();
     },
 
     // TODO: CUSTOM ACTIONS/COMMANDS VIA addAction/addCommand
     // https://github.com/Microsoft/monaco-editor/issues/25
 
     addActions() {
-      // options/settings, save, save-as, open file, close file, run code, run selected code, newfile, reload
-      // this.editor.addAction({
-      //   id: "save-as",
-      //   label: "Save As...",
-      //   precondition: null,
-      //   keybindings: [
-      //     monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.KEY_S,
-      //   ],
-      //   keybindingContext: null,
-      //   contextMenuGroupId: "io",
-      //   contextMenuOrder: 1.7,
-      //   run: (ed) => console.log(ed),
-      // });
+      // ⚠️ (some of) these should also go in the <bombino-menu /> component
+      // now: {
+      //   run code,
+      //   run selected code,
+      // },
+      // after i figure out tabs: {
+      //   options/settings,
+      //   save,
+      //   save-as,
+      //   open file,
+      //   close file,
+      //   new file,
+      // }
+      this.editor.addAction({
+        id: "run-code",
+        label: "Run Code",
+        keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter],
+        contextMenuGroupId: "action",
+        contextMenuOrder: 1.5,
+        run: () => this.$cep.evalScript(JSON.stringify(this.value)),
+      });
+
+      this.editor.addAction({
+        id: "run-selected-code",
+        label: "Run Selected Code",
+        precondition: "editorHasSelection",
+        keybindings: [monaco.KeyMod.Alt | monaco.KeyCode.Enter],
+        contextMenuGroupId: "action",
+        contextMenuOrder: 1.6,
+        run: (ed) =>
+          this.$cep.evalScript(
+            ed.getModel().getValueInRange(ed.getSelection())
+          ),
+      });
+
+      this.editor.addAction({
+        id: "reload-panel",
+        label: "Reload Panel",
+        keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_R],
+        contextMenuGroupId: "action",
+        contextMenuOrder: 2.1,
+        run: () => location.reload(),
+      });
     },
 
     addCommand() {

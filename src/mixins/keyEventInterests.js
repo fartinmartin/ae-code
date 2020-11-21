@@ -16,6 +16,7 @@ export const keyEventInterests = {
     const macOSKeys = [
       // https://eastmanreference.com/complete-list-of-applescript-key-codes OR Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Carbon.framework/Versions/A/Frameworks/HIToolbox.framework/Versions/A/Headers/Events.h
       { keyCode: 117 }, // (macOS kVK_ForwardDelete key)
+      { keyCode: 1, metaKey: true }, // (macOS CMD + S keys)
     ];
 
     const isMac = os.platform() === "darwin";
