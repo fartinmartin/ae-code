@@ -16,7 +16,7 @@ This project was bootstrapped using another [Tom Scharstein](https://github.com/
 
 ### Install a ZXP
 
-1. Download from /archive/ae-code[VERSION_NUMBER].zxp
+1. Download from [`/archive/ae-code[VERSION_NUMBER].zxp`](https://github.com/fartinmartin/ae-code/tree/master/archive)
 2. Install with [ZXP Installer](https://aescripts.com/learn/zxp-installer/)
 
 Alternatively, create your own ZXP:
@@ -25,9 +25,7 @@ Alternatively, create your own ZXP:
 2. `cd ae-code && npm i`
 3. Use bombino to [build, run, and sign](https://github.com/Inventsable/bombino-commands#usage)
 
-   <sup>Be sure to have [ZXPSignCmd](https://github.com/Adobe-CEP/CEP-Resources/tree/master/ZXPSignCmd) installed in the root folder's parent directory.</sup>
-
-   <sup>Those on macOS: choose `ZXPSignCmd-64bit` and rename it `ZXPSignCmd`.</sup>
+    > <sup>Be sure to have [ZXPSignCmd](https://github.com/Adobe-CEP/CEP-Resources/tree/master/ZXPSignCmd) installed in the root folder's parent directory. Those on macOS: choose `ZXPSignCmd-64bit` and rename it `ZXPSignCmd`.</sup>
 
 4. Install with [ZXP Installer](https://aescripts.com/learn/zxp-installer/)
 
@@ -35,9 +33,7 @@ Alternatively, create your own ZXP:
 
 1. `git clone https://github.com/fartinmartin/ae-code.git` in valid CEP folder:
 
-   <sup>Windows: `C:\Users\<USERNAME>\AppData\Roaming\CEP\extensions`</sup>
-
-   <sup>macOS: `~/Library⁩/Application Support/Adobe/⁨CEP⁩/extensions`</sup>
+    > <sup>Windows: `C:\Users\<USERNAME>\AppData\Roaming\CEP\extensions` • macOS: `~/Library⁩/Application Support/Adobe/⁨CEP⁩/extensions`</sup>
 
 2. `cd ae-code && npm i && npm run serve`
 3. [Edit CXSX plist file](https://github.com/Adobe-CEP/CEP-Resources/blob/master/CEP_10.x/Documentation/CEP%2010.0%20HTML%20Extension%20Cookbook.md#debugging-unsigned-extensions)
