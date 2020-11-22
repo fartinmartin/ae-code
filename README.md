@@ -15,8 +15,10 @@ Yes, this is a rip off of [ovid](https://github.com/Inventsable/ovid-editor) by 
 ## Todos
 
 - Continue to steal from [ovid](https://github.com/Inventsable/ovid-editor)...
+- Support keyboard shortcuts that conflict with host apps (`Del`, `Cmd + /`, `Cmd + S`, etc...)
 - I/O features (save, save as, open)
 - Tabs
 - User settings (any monaco editor options)
-- Console
-- Side bar file explorer?
+- Console panel
+- Side panel file explorer?
+- VS Code-like mini menu on bottom for resources?

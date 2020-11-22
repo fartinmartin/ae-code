@@ -1,5 +1,6 @@
 import Vue from "vue";
 import App from "./App.vue";
+import { EOSmsg } from "./assets/sampleCode";
 
 const Babel = require("@babel/standalone");
 
@@ -14,13 +15,15 @@ Vue.prototype.$host = JSON.stringify(window.__adobe_cep__.getHostEnvironment());
 // ⚠️ TODO: VISIBLE/USABLE CONSOLE IN PANEL UI
 Vue.prototype.$evalScript = function(code, callback = () => {}) {
   window.__adobe_cep__.evalScript(
-    `try{ ${this.$compileCode(code)} } catch(err) { console.error(err) }`,
+    `try{ ${this.$compileCode(
+      code
+    )} } catch(err) { alert(err.line.toString() + ": " + err.toString()) }`,
     callback
   );
 };
 
 Vue.prototype.$compileCode = (code) =>
-  Babel.transform(code, {
+  Babel.transform(code + EOSmsg, {
     presets: ["es2015"],
     plugins: [
       // https://babeljs.io/docs/en/plugins

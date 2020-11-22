@@ -12,6 +12,8 @@ import { Menus, Panel } from "lokney";
 import MonacoEditor from "./components/MonacoEditor";
 import { keyEventInterests } from "./mixins/keyEventInterests";
 
+import sampleCode from "./assets/sampleCode";
+
 export default {
   name: "App",
 
@@ -24,8 +26,7 @@ export default {
   },
 
   data: () => ({
-    code: "const noop = () => {};",
-    language: "javascript",
+    code: sampleCode,
     options: {
       fontSize: "16px",
       tabSize: "2",

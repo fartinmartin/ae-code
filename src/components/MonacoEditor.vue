@@ -151,7 +151,7 @@ export default {
         label: "Reload Panel",
         keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_R],
         contextMenuGroupId: "meta",
-        contextMenuOrder: 2,
+        contextMenuOrder: 2.1,
         run: () => location.reload(),
       });
     },
