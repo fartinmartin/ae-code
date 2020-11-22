@@ -114,11 +114,8 @@ export default {
     // https://github.com/Microsoft/monaco-editor/issues/25
 
     addActions() {
-      // ⚠️ (some of) these should also go in the <bombino-menu /> component
-      // now: {
-      //   run code,
-      //   run selected code,
-      // },
+      // https://github.com/microsoft/monaco-editor/blob/d2028b1a7551c788432fee27de8dc8262ddb1c2b/monaco.d.ts#L1045
+      // ⚠️ should (some of) these should also go in the <bombino-menu /> component?
       // after i figure out tabs: {
       //   options/settings,
       //   save,
@@ -126,14 +123,16 @@ export default {
       //   open file,
       //   close file,
       //   new file,
+      //   next tab,
+      //   prev tab,
       // }
       this.editor.addAction({
         id: "run-code",
         label: "Run Code",
         keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter],
         contextMenuGroupId: "action",
-        contextMenuOrder: 1.5,
-        run: () => this.$cep.evalScript(JSON.stringify(this.value)),
+        contextMenuOrder: 1.1,
+        run: (ed) => this.$evalScript(ed.getValue()),
       });
 
       this.editor.addAction({
@@ -142,39 +141,22 @@ export default {
         precondition: "editorHasSelection",
         keybindings: [monaco.KeyMod.Alt | monaco.KeyCode.Enter],
         contextMenuGroupId: "action",
-        contextMenuOrder: 1.6,
+        contextMenuOrder: 1.2,
         run: (ed) =>
-          this.$cep.evalScript(
-            ed.getModel().getValueInRange(ed.getSelection())
-          ),
+          this.$evalScript(ed.getModel().getValueInRange(ed.getSelection())),
       });
 
       this.editor.addAction({
         id: "reload-panel",
         label: "Reload Panel",
         keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_R],
-        contextMenuGroupId: "action",
-        contextMenuOrder: 2.1,
+        contextMenuGroupId: "meta",
+        contextMenuOrder: 2,
         run: () => location.reload(),
       });
     },
 
-    addCommand() {
-      // next tab, prev tab
-    },
-
-    // TODO: EVENTS
-
-    // cmd + enter = run this code
-    // cmd + s = save to file
-    // cmd + r = reload extension?
-
     // TODO: FILESYSTEM STUFF
-
-    compileCode() {
-      // return compiledCode;
-    },
-
     saveFile() {
       // data = this.compileCode();
       fs.writeFile(this.fileName, this.code, (error) => {
