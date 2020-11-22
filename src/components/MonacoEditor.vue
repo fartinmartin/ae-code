@@ -92,8 +92,8 @@ export default {
 
       monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
         noLib: true, // remove all hints/auto-completions (no need for HTML hints etc.)
-        allowNonTsExtensions: true, // at hints to .js files!
-        target: monaco.languages.typescript.ScriptTarget.CommonJS, // for adobe .jsx, i am assuming this is only necessary if setting language to typescript (otherwise we are compiling with babel in App.vue)
+        allowNonTsExtensions: true, // add ts hints to .js files!
+        target: monaco.languages.typescript.ScriptTarget.CommonJS, // for adobe .jsx, i am assuming this is only necessary if setting language to typescript (otherwise we are compiling with babel in main.js)
       });
 
       // ⚠️ https://github.com/Microsoft/monaco-editor/issues/61#issuecomment-236697130

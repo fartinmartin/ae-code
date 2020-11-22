@@ -12,7 +12,7 @@ Vue.config.devtools = false;
 Vue.prototype.$cep = window.__adobe_cep__;
 Vue.prototype.$host = JSON.stringify(window.__adobe_cep__.getHostEnvironment());
 
-// ⚠️ TODO: VISIBLE/USABLE CONSOLE IN PANEL UI
+// ⚠️ TODO: VISIBLE/USABLE CONSOLE IN PANEL UI instead of alert-ing errors via AE UI
 Vue.prototype.$evalScript = function(code, callback = () => {}) {
   window.__adobe_cep__.evalScript(
     `try{ ${this.$compileCode(
