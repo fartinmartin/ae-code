@@ -39,12 +39,12 @@
           <Menu>ae-code</Menu>
           <Geometry>
             <Size>
-              <Height>400</Height>
-              <Width>280</Width>
-            </Size>
-            <MaxSize>
               <Height>500</Height>
               <Width>598</Width>
+            </Size>
+            <MaxSize>
+              <Height>2880</Height>
+              <Width>5120</Width>
             </MaxSize>
             <MinSize>
               <Height>300</Height>
