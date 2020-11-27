@@ -1,6 +1,5 @@
 import Vue from "vue";
 import App from "./App.vue";
-import { EOSmsg } from "./assets/sampleCode";
 
 const Babel = require("@babel/standalone");
 
@@ -22,8 +21,9 @@ Vue.prototype.$evalScript = function(code, callback = () => {}) {
   );
 };
 
-Vue.prototype.$compileCode = (code) =>
-  Babel.transform(code + EOSmsg, {
+Vue.prototype.$compileCode = (code) => {
+  const EOSmsg = `// Adobe programs won't run your script if it ends in a comment... \n// So, just in case your code DOES end in a comment, here's a dummy var: \nvar endOfScript;`;
+  return Babel.transform(code + EOSmsg, {
     presets: ["es2015"],
     plugins: [
       // https://babeljs.io/docs/en/plugins
@@ -32,6 +32,7 @@ Vue.prototype.$compileCode = (code) =>
       "transform-arrow-functions",
     ],
   }).code;
+};
 
 new Vue({
   render: (h) => h(App),

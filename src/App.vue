@@ -11,8 +11,9 @@
 import { Menus, Panel } from "lokney";
 import MonacoEditor from "./components/MonacoEditor";
 import { keyEventInterests } from "./mixins/keyEventInterests";
+import getFileContents from "./helpers/getFileContents";
 
-import sampleCode from "./assets/sampleCode";
+const path = require("path");
 
 export default {
   name: "App",
@@ -26,11 +27,17 @@ export default {
   },
 
   data: () => ({
-    code: sampleCode,
+    code: "",
     options: {
       fontSize: "16px",
       tabSize: "2",
     },
   }),
+
+  async mounted() {
+    this.code = await getFileContents(
+      path.join(__dirname, `src/assets/examples/${this.$host.appName}.jsx`)
+    );
+  },
 };
 </script>

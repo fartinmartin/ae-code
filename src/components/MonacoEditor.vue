@@ -4,6 +4,7 @@
 
 <script>
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
+import getFileContents from "../helpers/getFileContents";
 
 const fs = require("fs");
 const path = require("path"); // https://shapeshed.com/writing-cross-platform-node/#use-the-os-module-for-more-control
@@ -43,7 +44,7 @@ export default {
     return {
       editor: null, // will hold refernce to monaco editor instance
       types: {
-        path: path.join(__dirname, `src/host/${this.$host.appName}/index.d.ts`), // soon to be: `src/host/${this.$host.appName}/index.d.ts` // also, is this compatible with windows?
+        path: path.join(__dirname, `src/host/${this.$host.appName}/index.d.ts`),
         definitions: "",
       },
     };
@@ -54,18 +55,8 @@ export default {
   },
 
   methods: {
-    getAdobeTypes() {
-      return new Promise((resolve, reject) => {
-        // read type definition file as a stream: https://stackoverflow.com/a/46801928
-        const readStream = fs.createReadStream(this.types.path, "utf8");
-        readStream.on("error", (error) => reject(error));
-        readStream.on("data", (chunk) => (this.types.definitions += chunk));
-        readStream.on("end", () => resolve(this.types.definitions));
-      });
-    },
-
     async initMonaco() {
-      await this.getAdobeTypes();
+      this.types.definitions = await getFileContents(this.types.path);
 
       const options = {
         // any option from: https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.ieditorconstructionoptions.html
