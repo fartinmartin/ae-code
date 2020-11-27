@@ -2,7 +2,13 @@
 <ExtensionList>
     <Extension Id="com.ae-code.panel">
         <HostList>
-            <Host Name="AEFT" Port="8888" />
+            <Host Name="ILST" Port="8888" />
+            <Host Name="AEFT" Port="8889" />
+            <Host Name="PHXS" Port="8890" />
+            <Host Name="PPRO" Port="8891" />
+            <Host Name="IDSN" Port="8892" />
+            <Host Name="AUDT" Port="8893" />
+            <Host Name="FLPR" Port="8894" />
         </HostList>
     </Extension>
 </ExtensionList>

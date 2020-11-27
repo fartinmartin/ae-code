@@ -10,7 +10,7 @@ Vue.config.devtools = false;
 // is there a better way to learn about this API? can i extract a type.d.ts file or something?
 // https://github.com/Adobe-CEP/CEP-Resources/blob/master/CEP_10.x/CSInterface.js OR ../public/CSInterface.js
 Vue.prototype.$cep = window.__adobe_cep__;
-Vue.prototype.$host = JSON.stringify(window.__adobe_cep__.getHostEnvironment());
+Vue.prototype.$host = JSON.parse(window.__adobe_cep__.getHostEnvironment());
 
 // ⚠️ TODO: VISIBLE/USABLE CONSOLE IN PANEL UI instead of alert-ing errors via AE UI
 Vue.prototype.$evalScript = function(code, callback = () => {}) {

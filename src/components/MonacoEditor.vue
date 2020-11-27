@@ -39,13 +39,15 @@ export default {
     event: "change",
   },
 
-  data: () => ({
-    editor: null, // will hold refernce to monaco editor instance
-    types: {
-      path: path.join(__dirname, "src/host/AEFT/index.d.ts"), // soon to be: `src/host/${this.$host.appName}/index.d.ts` // also, is this compatible with windows?
-      definitions: "",
-    },
-  }),
+  data() {
+    return {
+      editor: null, // will hold refernce to monaco editor instance
+      types: {
+        path: path.join(__dirname, `src/host/${this.$host.appName}/index.d.ts`), // soon to be: `src/host/${this.$host.appName}/index.d.ts` // also, is this compatible with windows?
+        definitions: "",
+      },
+    };
+  },
 
   mounted() {
     this.initMonaco();
