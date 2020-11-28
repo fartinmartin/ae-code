@@ -98,7 +98,7 @@ export default {
       );
 
       this.editor = monaco.editor.create(this.$el, options);
-      this.editor.getModel().updateOptions({ tabSize: this.options.tabSize });
+      this.editor.getModel().updateOptions({ tabSize: options.tabSize });
 
       this.addActions();
     },

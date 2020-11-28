@@ -22,7 +22,7 @@ Vue.prototype.$evalScript = function(code, callback = () => {}) {
 };
 
 Vue.prototype.$compileCode = (code) => {
-  const EOSmsg = `// Adobe programs won't run your script if it ends in a comment... \n// So, just in case your code DOES end in a comment, here's a dummy var: \nvar endOfScript;`;
+  const EOSmsg = `// Adobe programs won't run your script if it ends in a comment... \n// So, just in case your code DOES end in a comment, here's a dummy var to end your script: \nvar endOfScript;`;
   return Babel.transform(code + EOSmsg, {
     presets: ["es2015"],
     plugins: [
