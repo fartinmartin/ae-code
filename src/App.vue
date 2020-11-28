@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <bombino-panel>
-      <tab-bar :options="options" />
-      <monaco-editor v-model="code" :options="options" />
+      <tab-bar />
+      <monaco-editor v-model="code" />
     </bombino-panel>
     <bombino-menus refresh debug />
   </div>
@@ -11,16 +11,17 @@
 <script>
 import { Menus, Panel } from "lokney";
 import MonacoEditor from "./components/MonacoEditor";
-import { keyEventInterests } from "./mixins/keyEventInterests";
-import getFileContents from "./helpers/getFileContents";
 import TabBar from "./components/TabBar.vue";
+
+import getFileContents from "./helpers/getFileContents";
+// import { keyEventInterests } from "./mixins/keyEventInterests";
 
 const path = require("path");
 
 export default {
   name: "App",
 
-  mixins: [keyEventInterests], // doesn't work?
+  // mixins: [keyEventInterests], // doesn't work?
 
   components: {
     "bombino-menus": Menus,
@@ -31,10 +32,6 @@ export default {
 
   data: () => ({
     code: "",
-    options: {
-      fontSize: "16px",
-      tabSize: "2",
-    },
   }),
 
   async mounted() {

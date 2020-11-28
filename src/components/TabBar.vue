@@ -24,15 +24,10 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "TabBar",
-
-  props: {
-    options: {
-      type: Object,
-      required: true,
-    },
-  },
 
   data: () => ({
     activeTab: 1,
@@ -101,8 +96,12 @@ export default {
   }),
 
   computed: {
+    ...mapState("settings", {
+      user: (state) => state.user,
+      default: (state) => state.default,
+    }),
     style() {
-      return `font-size: ${this.options.fontSize};`;
+      return `font-size: ${this.user.fontSize || this.default.fontSize};`;
     },
   },
 };

@@ -4,6 +4,7 @@
 
 <script>
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
+import { mapState } from "vuex";
 import getFileContents from "../helpers/getFileContents";
 
 const fs = require("fs");
@@ -17,22 +18,9 @@ export default {
       type: String,
       required: true,
     },
-    theme: {
-      type: String,
-      default: "vs-dark",
-    },
     language: {
       type: String,
       default: "javascript",
-    },
-    options: Object,
-    width: {
-      type: [String, Number],
-      default: "100%",
-    },
-    height: {
-      type: [String, Number],
-      default: "100%",
     },
   },
 
@@ -50,6 +38,13 @@ export default {
     };
   },
 
+  computed: {
+    ...mapState("settings", {
+      userSettings: (state) => state.user,
+      default: (state) => state.default,
+    }),
+  },
+
   mounted() {
     this.initMonaco();
   },
@@ -64,8 +59,8 @@ export default {
 
         // required
         value: this.value,
-        theme: this.theme,
         language: this.language,
+        theme: "vs-dark",
         automaticLayout: true, // this is how monaco handles responsiveness/resizing
 
         // opinionated defaults
@@ -77,7 +72,7 @@ export default {
         formatOnType: true,
 
         // user defined
-        ...this.options,
+        ...this.userSettings,
       };
 
       // ⚠️ https://github.com/Microsoft/monaco-editor/issues/61#issuecomment-236697130
