@@ -1,5 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
+import Edit from "./views/Edit.vue";
+
 Vue.use(Router);
 
 export default new Router({
@@ -7,7 +9,7 @@ export default new Router({
     {
       path: "/:id?",
       name: "edit",
-      component: () => require("./views/Edit.vue").default,
+      component: Edit,
     },
   ],
 });

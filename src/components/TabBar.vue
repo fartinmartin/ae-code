@@ -8,12 +8,14 @@
           class="tab"
           :class="{ active: activeTab === tab.id }"
           @click="activeTab = tab.id"
+          @dblclick="editTab = tab.id"
         >
           <input
             type="text"
             class="tab-label"
             :value="tab.title + `.jsx`"
-            :disabled="activeTab !== tab.id"
+            :disabled="editTab !== tab.id"
+            @blur="editTab = null"
           />
           <button class="tab-close">×</button>
           <div class="bottom-border"></div>
@@ -31,6 +33,7 @@ export default {
 
   data: () => ({
     activeTab: 1,
+    editTab: null,
     tabs: [
       {
         id: 1,
@@ -98,10 +101,16 @@ export default {
   computed: {
     ...mapState("settings", {
       user: (state) => state.user,
-      default: (state) => state.default,
     }),
     style() {
-      return `font-size: ${this.user.fontSize || this.default.fontSize};`;
+      return `font-size: ${this.user.fontSize || "16px"};`;
+    },
+  },
+
+  methods: {
+    test(v, i) {
+      this.editTab = v;
+      console.log(this.$refs.tabs[i].firstChild.focus());
     },
   },
 };
@@ -123,10 +132,6 @@ export default {
 
 .panel {
   padding: 0 !important;
-}
-
-.tab-bar + * {
-  margin-top: calc(3 * 16px + 1px);
 }
 </style>
 
@@ -167,17 +172,30 @@ export default {
   display: flex;
   position: relative;
 
+  * {
+    cursor: pointer;
+    user-select: none;
+  }
+
   min-width: 120px;
   padding: 0.5rem 0;
   padding-left: 1rem;
   border-right: 1px solid var(--border);
 
-  &.active .bottom-border {
-    background: var(--border-active);
+  &.active {
+    input {
+      cursor: text;
+    }
+
+    .bottom-border {
+      background: var(--border-active);
+    }
+
+    .tab-label {
+      color: var(--text);
+    }
   }
-  &.active .tab-label {
-    color: var(--text);
-  }
+
   &:hover .tab-close {
     opacity: 1;
   }

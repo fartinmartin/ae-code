@@ -4,7 +4,7 @@
 
 <script>
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
-import { mapState } from "vuex";
+import { mapGetters } from "vuex";
 import getFileContents from "../helpers/getFileContents";
 
 const fs = require("fs");
@@ -39,10 +39,7 @@ export default {
   },
 
   computed: {
-    ...mapState("settings", {
-      userSettings: (state) => state.user,
-      default: (state) => state.default,
-    }),
+    ...mapGetters("settings", ["settings"]),
   },
 
   mounted() {
@@ -54,25 +51,9 @@ export default {
       this.types.definitions = await getFileContents(this.types.path);
 
       const options = {
-        // any option from: https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.ieditorconstructionoptions.html
-        // ...plus `tabSize`, added so that user could edit 👉 tabSize is updated via `getModel().updateOptions()`: https://github.com/microsoft/monaco-editor/issues/1859
-
-        // required
+        ...this.settings,
         value: this.value,
         language: this.language,
-        theme: "vs-dark",
-        automaticLayout: true, // this is how monaco handles responsiveness/resizing
-
-        // opinionated defaults
-        tabSize: 4, // see note above
-        scrollBeyondLastLine: false,
-        lineNumbersMinChars: 4,
-        autoIndent: true,
-        formatOnPaste: true,
-        formatOnType: true,
-
-        // user defined
-        ...this.userSettings,
       };
 
       // ⚠️ https://github.com/Microsoft/monaco-editor/issues/61#issuecomment-236697130

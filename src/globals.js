@@ -4,7 +4,6 @@ export const cep = window.__adobe_cep__;
 export const host = JSON.parse(window.__adobe_cep__.getHostEnvironment());
 
 export function evalScript(code, callback = () => {}) {
-  console.log(this.$compileCode(code));
   window.__adobe_cep__.evalScript(
     `try{ ${this.$compileCode(
       code
