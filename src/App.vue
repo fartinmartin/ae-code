@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <bombino-panel style="overflow: hidden;">
+    <bombino-panel style="overflow: hidden; padding: 0;">
       <tab-bar />
       <router-view />
     </bombino-panel>

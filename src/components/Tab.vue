@@ -64,17 +64,28 @@ input {
   position: relative;
   display: flex;
 
+  font-size: 0.815em;
   height: 100%;
-  /* padding: 0.375em 0; */
   padding-left: 1em;
 
-  border-right: 1px solid var(--border);
+  background: var(--tab-background);
+  border-right: 1px solid var(--tab-border);
+}
 
-  font-size: 0.815em;
+.tab:hover {
+  background: var(--tab-background--hover);
 }
 
 .tab:hover .tab-close {
   opacity: 1;
+}
+
+.tab:hover .tab-label {
+  color: var(--tab-text--hover);
+}
+
+.tab.active {
+  background: var(--tab-background--active);
 }
 
 .tab.active .tab-label {
@@ -82,15 +93,15 @@ input {
 }
 
 .tab.active .bottom-border {
-  background: var(--border-active);
+  background: var(--tab-border--active);
 }
 
 .tab.active .tab-label {
-  color: var(--text);
+  color: var(--tab-text--active);
 }
 
 .tab-label {
-  color: var(--text-inactive);
+  color: var(--tab-text);
   padding-right: 1em;
 }
 

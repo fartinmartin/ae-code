@@ -26,7 +26,9 @@ export default {
 
   computed: {
     ...mapState("tabs", { tabs: (state) => state.list }),
+
     ...mapGetters("settings", ["settings"]),
+
     style() {
       return `font-size: ${this.settings.fontSize};`;
     },
@@ -34,26 +36,24 @@ export default {
 };
 </script>
 
-<style>
-:root {
-  --text: #fff;
-  --text-inactive: #848484;
-
-  --bg: rgb(21, 21, 21);
-
-  --border: rgb(36, 36, 36);
-  --border-active: #6cc7f6;
-
-  color: var(--text);
-  background: var(--bg);
-}
-
-.panel {
-  padding: 0 !important;
-}
-</style>
-
 <style scoped>
+.tab-bar {
+  --tab-text: #848484;
+  --tab-text--active: #ffffff;
+  --tab-text--hover: #848484;
+
+  --tab-background: #1e1e1e;
+  --tab-background--active: #1e1e1e;
+  --tab-background--hover: #1e1e1e;
+
+  --tab-border: #242424;
+  --tab-border--active: #569cd6;
+  --tab-border--hover: #242424;
+
+  --tab-bar-background: #1e1e1e;
+  --tab-bar-border: #242424;
+}
+
 .tab-bar {
   position: fixed;
   z-index: 1000;
@@ -61,8 +61,8 @@ export default {
   width: 100%;
   height: 2.25em;
 
-  background-color: #1e1e1e;
-  border-bottom: 1px solid var(--border);
+  background-color: var(--tab-bar-background);
+  border-bottom: 1px solid var(--tab-bar-border);
 
   font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI",
     "HelveticaNeue-Light", system-ui, "Ubuntu", "Droid Sans", sans-serif !important;
