@@ -4,7 +4,7 @@
 
 <script>
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 import getFileContents from "../helpers/getFileContents";
 
 const path = require("path"); // https://shapeshed.com/writing-cross-platform-node/#use-the-os-module-for-more-control
@@ -17,7 +17,8 @@ export default {
       type: String,
       default: "javascript",
     },
-    tab: Object,
+
+    title: String,
   },
 
   model: {
@@ -36,6 +37,10 @@ export default {
 
   computed: {
     ...mapGetters("settings", ["settings"]),
+    ...mapState("tabs", { tabs: (state) => state.list }),
+    tab() {
+      return this.tabs.find((tab) => tab.title === this.title).monaco;
+    },
   },
 
   mounted() {

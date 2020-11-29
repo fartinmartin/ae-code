@@ -28,6 +28,7 @@ export default {
 
   mounted() {
     // TODO: pull all state from LocalStorage 🤷‍♂️ (tab list, last active tab, etc)
+    // is this the firstRun (via cookie or just localstorage?) then open a tab with the relevant JSX example and a tab for settings
   },
 };
 </script>
