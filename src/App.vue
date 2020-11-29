@@ -3,6 +3,7 @@
     <bombino-panel style="overflow: hidden; padding: 0;">
       <tab-bar />
       <router-view />
+      <!-- TODO: <div>resources mini menu</div> -->
     </bombino-panel>
     <bombino-menus refresh debug />
   </div>

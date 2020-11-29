@@ -8,6 +8,7 @@
           :to="tab.title"
           :tab="tab"
         />
+        <!-- TODO: <button>+</button> -->
       </div>
     </div>
   </div>
@@ -72,7 +73,6 @@ export default {
 .scrollable-container {
   position: relative;
   overflow: scroll;
-
   scrollbar-width: none;
 }
 

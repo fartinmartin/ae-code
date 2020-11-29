@@ -12,6 +12,24 @@ const state = {
     minimap: { enabled: false },
   },
 
+  colors: {
+    // TODO: incorporate these with CSS
+    tabText: "#848484",
+    tabTextActive: "#ffffff",
+    tabTextHover: "#848484",
+
+    tabBackground: "#1e1e1e",
+    tabBackgroundActive: "#1e1e1e",
+    tabBackgroundHover: "#1e1e1e",
+
+    tabBorder: "#242424",
+    tabBorderActive: "#569cd6",
+    tabBorderHover: "#242424",
+
+    tabBarBackground: "#1e1e1e",
+    tabBarBorder: "#242424",
+  },
+
   defaults: {
     fontSize: "16px",
     tabSize: 2,
