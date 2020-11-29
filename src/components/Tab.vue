@@ -50,6 +50,7 @@ input {
   box-shadow: none;
   font-size: inherit;
   font-family: inherit;
+  font-weight: inherit;
   color: inherit;
   line-height: 1;
 }
@@ -63,7 +64,8 @@ input {
   position: relative;
   display: flex;
 
-  padding: 0.375em 0;
+  height: 100%;
+  /* padding: 0.375em 0; */
   padding-left: 1em;
 
   border-right: 1px solid var(--border);
@@ -97,7 +99,8 @@ input {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.5em 1em;
+  height: 100%;
+  padding: 0 1em;
   opacity: 0;
 }
 

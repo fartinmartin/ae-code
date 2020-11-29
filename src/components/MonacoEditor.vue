@@ -47,7 +47,7 @@ export default {
     },
 
     style() {
-      return `width: 100%; height: calc(100% - 2.275em); margin-top: 2.275em; font-size: ${this.settings.fontSize};`; // not sold on 2.275em, i think tabbar needs an explicit height (set in ems) and its contents dispersed through that height...
+      return `width: 100%; height: calc(100% - 2.25em); margin-top: 2.25em; font-size: ${this.settings.fontSize};`; // not sold on 2.275em, i think tabbar needs an explicit height (set in ems) and its contents dispersed through that height...
     },
   },
 
