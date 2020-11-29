@@ -23,6 +23,7 @@ const state = {
     autoIndent: true,
     formatOnPaste: true,
     formatOnType: true,
+    language: "javascript", // TBD: should this be allowed to be "typescript" based on file extension?
   },
 };
 

@@ -6,7 +6,7 @@
 import MonacoEditor from "../components/MonacoEditor";
 import { mapState } from "vuex";
 
-// TODO: this router view could just be the MonacoEditor.vue component...
+// TODO: this router view could just be the MonacoEditor.vue component... but for some reason monaco.editor did't initialize when I tried though 🤷‍♂️
 
 export default {
   name: "Edit",

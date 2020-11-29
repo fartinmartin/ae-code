@@ -2,42 +2,27 @@
   <div class="tab-bar" :style="style">
     <div class="scrollable-container">
       <div class="tabs">
-        <router-link
+        <router-tab
           v-for="tab in tabs"
           :key="tab.id"
           :to="tab.title"
-          tag="div"
-          class="tab"
-          active-class="active"
-          @dblclick.native="editTab = tab.id"
-        >
-          <!-- :class="{ active: activeTab === tab.id }"
-          @click="activeTab = tab.id" -->
-          <input
-            type="text"
-            class="tab-label"
-            :value="tab.title + `.jsx`"
-            :disabled="editTab !== tab.id"
-            @blur="editTab = null"
-          />
-          <button class="tab-close">{{ isSaved ? `×` : `•` }}</button>
-          <div class="bottom-border"></div>
-        </router-link>
+          :tab="tab"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import Tab from "./Tab";
 import { mapState, mapGetters } from "vuex";
 
 export default {
   name: "TabBar",
 
-  data: () => ({
-    editTab: null,
-    isSaved: true,
-  }),
+  components: {
+    "router-tab": Tab,
+  },
 
   computed: {
     ...mapState("tabs", { tabs: (state) => state.list }),
@@ -68,7 +53,11 @@ export default {
 }
 </style>
 
-<style lang="scss" scoped>
+<style scoped>
+.tab-bar * {
+  font-size: inherit !important;
+}
+
 .tab-bar {
   background-color: var(--bg);
   border-bottom: 1px solid var(--border);
@@ -76,10 +65,6 @@ export default {
   z-index: 1000;
 
   height: 3em;
-
-  * {
-    font-size: inherit !important;
-  }
 }
 
 .scrollable-container {
@@ -87,79 +72,13 @@ export default {
   overflow: scroll;
 
   scrollbar-width: none;
+}
 
-  &::-webkit-scrollbar {
-    display: none;
-  }
+.scrollable-container::-webkit-scrollbar {
+  display: none;
 }
 
 .tabs {
   display: flex;
-}
-
-.bottom-border {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 1px;
-}
-
-.tab {
-  display: flex;
-  position: relative;
-
-  * {
-    cursor: pointer;
-    user-select: none;
-  }
-
-  min-width: 120px;
-  padding: 0.5rem 0;
-  padding-left: 1rem;
-  border-right: 1px solid var(--border);
-
-  &.active {
-    input {
-      cursor: text;
-    }
-
-    .bottom-border {
-      background: var(--border-active);
-    }
-
-    .tab-label {
-      color: var(--text);
-    }
-  }
-
-  &:hover .tab-close {
-    opacity: 1;
-  }
-}
-
-button,
-input {
-  border: none;
-  background-image: none;
-  background-color: transparent;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
-  font-size: inherit;
-  color: inherit;
-}
-
-.tab-close {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem;
-  opacity: 0;
-}
-
-.tab-label {
-  width: 100%;
-  color: var(--text-inactive);
 }
 </style>

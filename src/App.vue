@@ -28,7 +28,6 @@ export default {
 
   mounted() {
     // TODO: pull all state from LocalStorage 🤷‍♂️ (tab list, last active tab, etc)
-    this.$router.push(this.tabs[0].title); // this doesnt work though...
   },
 };
 </script>

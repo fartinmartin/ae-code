@@ -13,10 +13,6 @@ export default {
   name: "MonacoEditor",
 
   props: {
-    value: {
-      type: String,
-      required: true,
-    },
     language: {
       type: String,
       default: "javascript",
@@ -50,12 +46,6 @@ export default {
     async initMonaco() {
       this.types.definitions = await getFileContents(this.types.path);
 
-      const options = {
-        ...this.settings,
-        value: this.value,
-        language: this.language,
-      };
-
       // ⚠️ https://github.com/Microsoft/monaco-editor/issues/61#issuecomment-236697130
       // compiler options
 
@@ -73,9 +63,10 @@ export default {
         this.types.path // optional file path eg: "types-for-adobe/AfterEffects/2018"
       );
 
-      this.editor = monaco.editor.create(this.$el, options);
-      this.editor.getModel().updateOptions({ tabSize: options.tabSize });
+      this.editor = monaco.editor.create(this.$el, this.settings);
+      this.editor.getModel().updateOptions({ tabSize: this.settings.tabSize });
 
+      this.editor.setModel(this.tab.model); // inits the active tab (for first time start up aka when no route is navigated to via a tab click)
       this.addActions();
     },
 
