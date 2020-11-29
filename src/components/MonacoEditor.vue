@@ -37,9 +37,7 @@ export default {
 
   computed: {
     ...mapGetters("settings", ["settings"]),
-
     ...mapGetters("tabs", ["initialTab"]),
-
     ...mapState("tabs", { tabs: (state) => state.list }),
 
     tab() {
