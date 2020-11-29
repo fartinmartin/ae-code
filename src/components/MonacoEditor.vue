@@ -7,7 +7,6 @@ import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { mapGetters } from "vuex";
 import getFileContents from "../helpers/getFileContents";
 
-const fs = require("fs");
 const path = require("path"); // https://shapeshed.com/writing-cross-platform-node/#use-the-os-module-for-more-control
 
 export default {
@@ -22,6 +21,7 @@ export default {
       type: String,
       default: "javascript",
     },
+    tab: Object,
   },
 
   model: {
@@ -126,33 +126,26 @@ export default {
     },
 
     // TODO: FILESYSTEM STUFF
-    saveFile() {
-      // data = this.compileCode();
-      fs.writeFile(this.fileName, this.code, (error) => {
-        error && console.log(error);
-        console.log("[ae-code] File saved!");
-      });
-    },
+    saveFile() {},
 
-    // TODO: TABS (including an ever-present options/settings tab, or maybe it is accessivle via context menu)
-    // https://github.com/Microsoft/monaco-editor/issues/604#issuecomment-344214706
-    // also, where do we want to store tabs? both literally (as data) and as state 🤔
-    // i think this should live in a <tab-bar/> component in App.vue and should emit the changes
-    // for this.editor to react to and change the model (or, instead of models, do we simplify and just swap this.code data 🤔)
+    // TODO: TABS ACTIONS
+    // should start by building this functionality within <tab-bar />, i think
 
     addTab() {
-      // const tab = monaco.editor.createModel(...);
-      // this.switchTab(tab);
+      /* 1. add tab to vuex store 2. push new tab to $router */
     },
 
     closeTab() {
-      // editorInstance.saveViewState();
-      // this.switchTab(this.tabs[0]) or something...
+      /* 1. remove tab from vuex store 2. push prev tab (tabs[tabs.indexOf(thisTab-1)]) to $router */
     },
+  },
 
-    switchTab() {
-      // editorInstance.setModel(modelInstance)
-      // editorInstance.restoreViewState()
+  watch: {
+    tab(tab, prevTab) {
+      prevTab.state = this.editor.saveViewState();
+      this.editor.setModel(tab.model);
+      this.editor.restoreViewState(tab.state);
+      this.editor.focus();
     },
   },
 

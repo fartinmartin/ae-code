@@ -2,14 +2,17 @@
   <div class="tab-bar" :style="style">
     <div class="scrollable-container">
       <div class="tabs">
-        <div
+        <router-link
           v-for="tab in tabs"
           :key="tab.id"
+          :to="tab.title"
+          tag="div"
           class="tab"
-          :class="{ active: activeTab === tab.id }"
-          @click="activeTab = tab.id"
-          @dblclick="editTab = tab.id"
+          active-class="active"
+          @dblclick.native="editTab = tab.id"
         >
+          <!-- :class="{ active: activeTab === tab.id }"
+          @click="activeTab = tab.id" -->
           <input
             type="text"
             class="tab-label"
@@ -17,100 +20,30 @@
             :disabled="editTab !== tab.id"
             @blur="editTab = null"
           />
-          <button class="tab-close">×</button>
+          <button class="tab-close">{{ isSaved ? `×` : `•` }}</button>
           <div class="bottom-border"></div>
-        </div>
+        </router-link>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 
 export default {
   name: "TabBar",
 
   data: () => ({
-    activeTab: 1,
     editTab: null,
-    tabs: [
-      {
-        id: 1,
-        title: "sayHi",
-        path: "",
-        code: `const sayHi = () => alert("hi");\nsayHi();`,
-      },
-      {
-        id: 2,
-        title: "untitled",
-        path: "",
-        code: ``,
-      },
-      {
-        id: 3,
-        title: "sayHi",
-        path: "",
-        code: `const sayHi = () => alert("hi");\nsayHi();`,
-      },
-      {
-        id: 4,
-        title: "untitled",
-        path: "",
-        code: ``,
-      },
-      {
-        id: 5,
-        title: "sayHi",
-        path: "",
-        code: `const sayHi = () => alert("hi");\nsayHi();`,
-      },
-      {
-        id: 6,
-        title: "untitled",
-        path: "",
-        code: ``,
-      },
-      {
-        id: 7,
-        title: "sayHi",
-        path: "",
-        code: `const sayHi = () => alert("hi");\nsayHi();`,
-      },
-      {
-        id: 8,
-        title: "untitled",
-        path: "",
-        code: ``,
-      },
-      {
-        id: 9,
-        title: "sayHi",
-        path: "",
-        code: `const sayHi = () => alert("hi");\nsayHi();`,
-      },
-      {
-        id: 10,
-        title: "untitled",
-        path: "",
-        code: ``,
-      },
-    ],
+    isSaved: true,
   }),
 
   computed: {
-    ...mapState("settings", {
-      user: (state) => state.user,
-    }),
+    ...mapState("tabs", { tabs: (state) => state.list }),
+    ...mapGetters("settings", ["settings"]),
     style() {
-      return `font-size: ${this.user.fontSize || "16px"};`;
-    },
-  },
-
-  methods: {
-    test(v, i) {
-      this.editTab = v;
-      console.log(this.$refs.tabs[i].firstChild.focus());
+      return `font-size: ${this.settings.fontSize};`;
     },
   },
 };
@@ -143,6 +76,10 @@ export default {
   z-index: 1000;
 
   height: 3em;
+
+  * {
+    font-size: inherit !important;
+  }
 }
 
 .scrollable-container {

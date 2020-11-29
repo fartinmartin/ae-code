@@ -1,4 +1,4 @@
-export function isJSON(string) {
+export default function(string) {
   try {
     JSON.parse(string);
     return true;

@@ -1,35 +1,29 @@
 <template>
-  <div style="height: 100vh;">
-    <tab-bar />
-    <monaco-editor v-model="code" />
-  </div>
+  <monaco-editor :tab="tab.monaco" />
 </template>
 
 <script>
 import MonacoEditor from "../components/MonacoEditor";
-import TabBar from "../components/TabBar.vue";
+import { mapState } from "vuex";
 
-import getFileContents from "../helpers/getFileContents";
-const path = require("path");
+// TODO: this router view could just be the MonacoEditor.vue component...
 
 export default {
   name: "Edit",
 
-  components: {
-    "monaco-editor": MonacoEditor,
-    "tab-bar": TabBar,
+  props: {
+    title: String,
   },
 
-  data: () => ({
-    code: "", // figure out way to make code reliant on params
-  }),
+  components: {
+    "monaco-editor": MonacoEditor,
+  },
 
-  async mounted() {
-    this.code = await getFileContents(
-      path.join(__dirname, `src/assets/examples/${this.$host.appName}.jsx`)
-    );
+  computed: {
+    ...mapState("tabs", { tabs: (state) => state.list }),
+    tab() {
+      return this.tabs.find((tab) => tab.title === this.title);
+    },
   },
 };
 </script>
-
-<style></style>

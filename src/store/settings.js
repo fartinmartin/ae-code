@@ -9,11 +9,15 @@ const state = {
     fontSize: "16px",
     tabSize: 2,
     theme: "vs-dark",
+    minimap: { enabled: false },
   },
 
   defaults: {
+    fontSize: "16px",
+    tabSize: 2,
+    theme: "vs-dark",
+    minimap: { enabled: false },
     automaticLayout: true, // this is how monaco handles responsiveness/resizing
-    tabSize: 4,
     scrollBeyondLastLine: false,
     lineNumbersMinChars: 4,
     autoIndent: true,
@@ -45,7 +49,12 @@ const actions = {
   },
 
   resetSettings({ commit }) {
-    const defaults = { fontSize: "16px", tabSize: 2, theme: "vs-dark" };
+    const defaults = {
+      fontSize: "16px",
+      tabSize: 2,
+      theme: "vs-dark",
+      minimap: { enabled: false },
+    };
     commit("setSettings", defaults);
   },
 };

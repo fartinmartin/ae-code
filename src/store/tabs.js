@@ -1,22 +1,28 @@
+import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
+// const path = require("path");
+// import { host } from "../globals";
+
 const state = {
   list: [
     {
-      id: 1,
-      title: "example",
-      path: "",
-      code: `const sayHi = () => alert("hi");\nsayHi();`,
-    },
-    {
-      id: 2,
-      title: "settings",
-      path: "",
-      code: `const sayHi = () => alert("hi");\nsayHi();`,
-    },
-    {
-      id: 3,
       title: "sayHi",
-      path: "",
-      code: `const sayHi = () => alert("hi");\nsayHi();`,
+      monaco: {
+        model: monaco.editor.createModel(
+          `\n\n\n\n\n\n\n\n\n\n\n\nconst sayHi = () => alert("hi");\nsayHi();`,
+          "javascript"
+        ),
+        state: null,
+      },
+    },
+    {
+      title: "sayBye",
+      monaco: {
+        model: monaco.editor.createModel(
+          `\n\n\n\n\n\n\n\n\n\n\n\nconst sayBye = () => alert("bye");\nsayBye();`,
+          "javascript"
+        ),
+        state: null,
+      },
     },
   ],
 };
