@@ -2,13 +2,14 @@
 
 An Adobe panel providing ~~the most advanced~~ a scripting environment for in-app code editing.
 
-Yes, this is a rip off of [ovid](https://github.com/Inventsable/ovid-editor) by [Tom Scharstein](https://github.com/Inventsable) (even the above description mostly comes from his project 😬). I made this because I wanted to change the font size of the ovid-editor. And then I wanted to learn how it was made!
+This is a rip off of [ovid](https://github.com/Inventsable/ovid-editor) by [Tom Scharstein](https://github.com/Inventsable) (even the above description mostly comes from his project 😬). I made this because I wanted to change the font size of the ovid-editor. And then I wanted to learn how it was made!
 
 ## Features
 
-- Run and edit code inside an Adobe host app (only tested in After Effects so far...)
+- Run and edit code inside an Adobe host app
 - Hinting and auto completion based on [types-for-adobe](https://github.com/pravdomil/types-for-adobe)
 - Automatic ES6 compilation for any ECMA methods that Adobe CEP panels don't support
+- Tabs for editing multiple scripts
 
 ## Get started
 
@@ -25,7 +26,7 @@ Alternatively, create your own ZXP:
 2. `cd ae-code && npm i`
 3. Use bombino to [build, run, and sign](https://github.com/Inventsable/bombino-commands#usage)
 
-   > <sup>Be sure to have [ZXPSignCmd](https://github.com/Adobe-CEP/CEP-Resources/tree/master/ZXPSignCmd) installed in the root folder's parent directory. <br/>Those on macOS: choose `ZXPSignCmd-64bit` and rename it `ZXPSignCmd`.</sup>
+   > <sup>Be sure to have [ZXPSignCmd](https://github.com/Adobe-CEP/CEP-Resources/tree/master/ZXPSignCmd) installed in the root folder's parent directory<br/>Those on macOS: choose `ZXPSignCmd-64bit` and rename it `ZXPSignCmd`</sup>
 
 4. Install with [ZXP Installer](https://aescripts.com/learn/zxp-installer/)
 
