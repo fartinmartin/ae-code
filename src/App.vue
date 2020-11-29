@@ -11,7 +11,7 @@
 <script>
 import { Menus, Panel } from "lokney";
 import TabBar from "./components/TabBar.vue";
-import { mapState } from "vuex";
+import { mapGetters, mapState } from "vuex";
 
 export default {
   name: "App",
@@ -24,9 +24,14 @@ export default {
 
   computed: {
     ...mapState("tabs", { tabs: (state) => state.list }),
+    ...mapGetters("tabs", ["initialTab"]),
   },
 
   mounted() {
+    // on cold start, make sure route is synced with displayed tab!
+    this.$route.params.title !== this.initialTab &&
+      this.$router.push({ path: this.initialTab });
+
     // TODO: pull all state from LocalStorage 🤷‍♂️ (tab list, last active tab, etc)
     // is this the firstRun (via cookie or just localstorage?) then open a tab with the relevant JSX example and a tab for settings
   },

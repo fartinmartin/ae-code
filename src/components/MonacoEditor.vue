@@ -18,7 +18,7 @@ export default {
       default: "javascript",
     },
 
-    title: String,
+    title: String, // comes from router.js
   },
 
   model: {
@@ -37,10 +37,15 @@ export default {
 
   computed: {
     ...mapGetters("settings", ["settings"]),
+    ...mapGetters("tabs", ["initialTab"]),
+
     ...mapState("tabs", { tabs: (state) => state.list }),
+
     tab() {
-      return this.tabs.find((tab) => tab.title === this.title).monaco;
+      const activeTab = this.tabs.find((tab) => tab.title === this.title);
+      return activeTab ? activeTab.monaco : this.initialTab.monaco;
     },
+
     style() {
       return `width: 100%; height: calc(100% - 2.275em); margin-top: 2.275em; font-size: ${this.settings.fontSize};`; // not sold on 2.275em, i think tabbar needs an explicit height (set in ems) and its contents dispersed through that height...
     },
@@ -141,6 +146,7 @@ export default {
 
   watch: {
     tab(tab, prevTab) {
+      if (!this.editor) return;
       prevTab.state = this.editor.saveViewState();
       this.editor.setModel(tab.model);
       this.editor.restoreViewState(tab.state);

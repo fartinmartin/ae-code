@@ -31,7 +31,10 @@ const mutations = {};
 
 const actions = {};
 
-const getters = {};
+const getters = {
+  initialTab: (state) =>
+    localStorage.getItem("lastActiveTab") /* .title */ || state.list[0].title,
+};
 
 export default {
   namespaced: true,
