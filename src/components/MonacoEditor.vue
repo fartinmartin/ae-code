@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 100%; height: 100%;" />
+  <div :style="style" />
 </template>
 
 <script>
@@ -40,6 +40,9 @@ export default {
     ...mapState("tabs", { tabs: (state) => state.list }),
     tab() {
       return this.tabs.find((tab) => tab.title === this.title).monaco;
+    },
+    style() {
+      return `width: 100%; height: calc(100% - 2.275em); margin-top: 2.275em; font-size: ${this.settings.fontSize};`; // not sold on 2.275em, i think tabbar needs an explicit height (set in ems) and its contents dispersed through that height...
     },
   },
 

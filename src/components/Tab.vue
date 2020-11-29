@@ -6,6 +6,7 @@
       class="tab-label"
       :value="tab.title"
       :disabled="!active"
+      :size="Math.max(tab.title.length, 4)"
     />
     <div class="tab-actions">
       <button v-if="!saved" class="tab-unsaved">•</button>
@@ -48,7 +49,9 @@ input {
   -moz-box-shadow: none;
   box-shadow: none;
   font-size: inherit;
+  font-family: inherit;
   color: inherit;
+  line-height: 1;
 }
 
 .tab * {
@@ -57,19 +60,22 @@ input {
 }
 
 .tab {
-  display: flex;
   position: relative;
-  min-width: 120px;
-  padding: 0.5rem 0;
-  padding-left: 1rem;
+  display: flex;
+
+  padding: 0.375em 0;
+  padding-left: 1em;
+
   border-right: 1px solid var(--border);
+
+  font-size: 0.815em;
 }
 
 .tab:hover .tab-close {
   opacity: 1;
 }
 
-.tab.active input {
+.tab.active .tab-label {
   cursor: text;
 }
 
@@ -81,18 +87,18 @@ input {
   color: var(--text);
 }
 
+.tab-label {
+  color: var(--text-inactive);
+  padding-right: 1em;
+}
+
 .tab-close,
 .tab-unsaved {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.5rem;
+  padding: 0.5em 1em;
   opacity: 0;
-}
-
-.tab-label {
-  width: 100%;
-  color: var(--text-inactive);
 }
 
 .bottom-border {

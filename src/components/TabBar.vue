@@ -54,17 +54,17 @@ export default {
 </style>
 
 <style scoped>
-.tab-bar * {
-  font-size: inherit !important;
-}
-
 .tab-bar {
-  background-color: var(--bg);
-  border-bottom: 1px solid var(--border);
   position: fixed;
   z-index: 1000;
 
-  height: 3em;
+  width: calc(100% - var(--width-scrollbar-track) + 1px);
+
+  background-color: #1e1e1e;
+  border-bottom: 1px solid var(--border);
+
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI",
+    "HelveticaNeue-Light", system-ui, "Ubuntu", "Droid Sans", sans-serif !important;
 }
 
 .scrollable-container {
