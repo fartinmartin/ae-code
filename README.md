@@ -47,18 +47,9 @@ Alternatively, create your own ZXP:
 ## Todos
 
 - Continue to steal from [ovid](https://github.com/Inventsable/ovid-editor)...
-- Support keyboard shortcuts that conflict with host apps (`Del`, `Cmd + /`, `Cmd + S`, etc...)
-- I/O features (save, save as, open)
-- Tabs
 - User settings (any monaco editor options)
-- Console panel
+- I/O features (save, save as, open)
+- VS Code-like mini menu on bottom for resources
+- Support keyboard shortcuts that conflict with host apps (`Del`, `Cmd + /`, `Cmd + S`, etc...)
+- Console/output panel
 - Side panel file explorer?
-- VS Code-like mini menu on bottom for resources?
-
-## Tabs
-
-- tabs are `vue-router` routes...
-- navigated via the `<tab-bar />` component in the `Edit.vue` view
-- for each route (AKA tab), a new Monaco Editor model instance is created via `monaco.editor.createModel(...)`—so any `addTab()` will have to handle this
-- when switching tabs, `editorInstance.setModel(modelInstance)` will update a `<monaco-editor />` prop?
-- will have to store models with tabs in vuex store?
