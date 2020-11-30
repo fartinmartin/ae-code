@@ -2,7 +2,9 @@
 
 An Adobe panel providing ~~the most advanced~~ a scripting environment for in-app code editing.
 
-This is a rip off of [ovid](https://github.com/Inventsable/ovid-editor) by [Tom Scharstein](https://github.com/Inventsable) (even the above description mostly comes from his project 😬). I made this because I wanted to change the font size of the ovid-editor. And then I wanted to learn how it was made!
+This is a rip off of [ovid](https://github.com/Inventsable/ovid-editor) by [Tom Scharstein](https://github.com/Inventsable) (even the above description mostly comes from his project 😬). I made this because I wanted to change the font size of the ovid-editor. And then I wanted to learn how it was made! I also share Tom's motivation:
+
+> The goal of this panel is to lessen the burden to entry for any one curious about scripting while also providing a sophisticated environment for any one experienced to sandbox snippets within, all with absolutely no setup required.
 
 ## Features
 
@@ -29,6 +31,8 @@ Alternatively, create your own ZXP:
    > <sup>Be sure to have [ZXPSignCmd](https://github.com/Adobe-CEP/CEP-Resources/tree/master/ZXPSignCmd) installed in the root folder's parent directory<br/>Those on macOS: choose `ZXPSignCmd-64bit` and rename it `ZXPSignCmd`</sup>
 
 4. Install with [ZXP Installer](https://aescripts.com/learn/zxp-installer/)
+
+   > <sup>⚠️ Heads up! For some reason (at least on macOS) installing a ZXP with ZXP Installer wipes out any directory inside of `~/Library⁩/Application Support/Adobe/⁨CEP⁩/extensions`—be sure to have a backup!</sup>
 
 ### Serve a live version
 

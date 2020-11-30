@@ -46,10 +46,6 @@ const textLayer = comp.layers.addText("Hello World!");
 textLayer.label = 9;
 textLayer.blendingMode = BlendingMode.DIFFERENCE;
 
-// center the "Hello World!" text layer's anchor point
-const textLayerHeight = textLayer.sourceRectAtTime(0, true).height;
-textLayer.property("Anchor Point").setValue([0.0, textLayerHeight / -2, 0.0]);
-
 // hot tip: text layer properties are defined via a TextDocument object
 // https://ae-scripting.docsforadobe.dev/other/textdocument/
 const textSource = textLayer.property("Source Text");
@@ -69,5 +65,9 @@ textSource.setValue(textDocument);
 textLayer.property("ADBE Effect Parade").addProperty("Fill");
 
 // TODO: https://ae-scripting.docsforadobe.dev/matchnames/layer/textlayer/
+
+// center the "Hello World!" text layer's anchor point
+const textLayerHeight = textLayer.sourceRectAtTime(0, true).height;
+textLayer.property("Anchor Point").setValue([0.0, textLayerHeight / -2, 0.0]);
 
 alert("🎉 Yay! You've done it!");
