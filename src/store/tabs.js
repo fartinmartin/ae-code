@@ -47,7 +47,7 @@ const mutations = {
 const actions = {
   getModels({ state, commit }) {
     state.list.forEach(async (tab, i) => {
-      const code = await getFileContents(path.join(__dirname, tab.path));
+      const code = await getFileContents(path.join(__dirname, tab.path)); // "__dirname" will probs break if file saved outside of extention dir, right?
       commit("setModel", {
         tab: i,
         model: monaco.editor.createModel(code, "javascript"),
@@ -91,6 +91,7 @@ const actions = {
   },
 
   closeTab({ commit, state, dispatch }, { tab, reRouteMe }) {
+    // TODO: store tab (and it's index within state.list) in a state.history array for "re-open closed tab" functionality
     if (reRouteMe) router.go(-1);
     commit("removeTab", tab);
     if (!state.list.length) dispatch("addTab");
