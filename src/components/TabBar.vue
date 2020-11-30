@@ -10,6 +10,7 @@
         />
         <button class="tab" @click="addTab">+</button>
       </div>
+      <!-- TODO: minimal scrollbar <div class="scrollbar"></div> -->
     </div>
   </div>
 </template>
@@ -98,5 +99,25 @@ button.tab {
 
 button.tab:hover {
   color: var(--tab-text--active);
+}
+</style>
+
+<style scoped>
+.scrollbar {
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+
+  height: 3px;
+  z-index: 50;
+}
+
+.slider {
+  contain: strict;
+  position: absolute;
+  height: 3px;
+  top: 0px;
+  left: 47px; /* dynamic: on horizontal scroll => left = scrollX? */
+  width: 778px; /* dynamic: width of .tabs / width of .scrollable-container ? */
 }
 </style>
