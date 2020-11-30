@@ -5,7 +5,7 @@
         <router-tab
           v-for="tab in tabs"
           :key="tab.id"
-          :to="tab.title"
+          :to="{ params: { title: tab.title, path: tab.path } }"
           :tab="tab"
         />
         <!-- TODO: <button>+</button> -->

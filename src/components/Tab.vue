@@ -7,6 +7,7 @@
       :value="tab.title"
       :disabled="!active"
       :size="Math.max(tab.title.length, 4)"
+      spellcheck="false"
     />
     <div class="tab-actions">
       <button v-if="!saved" class="tab-unsaved">•</button>

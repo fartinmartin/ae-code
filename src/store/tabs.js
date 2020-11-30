@@ -1,39 +1,60 @@
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
-// const path = require("path");
-// import { host } from "../globals";
+import { host } from "../globals";
+import getFileContents from "../helpers/getFileContents";
+const path = require("path");
 
 const state = {
   list: [
     {
-      title: "sayHi",
+      title: "example.jsx",
+      path: `src/assets/examples/${host.appName}.jsx`,
       monaco: {
-        model: monaco.editor.createModel(
-          `\n\n\n\n\n\n\n\n\n\n\n\nconst sayHi = () => alert("hi");\nsayHi();`,
-          "javascript"
-        ),
+        model: null,
         state: null,
       },
     },
     {
-      title: "sayBye",
+      title: "settings.js",
+      path: `src/assets/settings.js`,
       monaco: {
-        model: monaco.editor.createModel(
-          `\n\n\n\n\n\n\n\n\n\n\n\nconst sayBye = () => alert("bye");\nsayBye();`,
-          "javascript"
-        ),
+        model: null,
         state: null,
       },
     },
   ],
 };
 
-const mutations = {};
+const mutations = {
+  setModel(state, { tab, model }) {
+    state.list[tab].monaco.model = model;
+  },
+};
 
-const actions = {};
+const actions = {
+  getModels({ state, commit }) {
+    state.list.forEach(async (tab, i) => {
+      const code = await getFileContents(path.join(__dirname, tab.path));
+      commit("setModel", {
+        tab: i,
+        model: monaco.editor.createModel(code, "javascript"),
+      });
+    });
+  },
+
+  async getModel({ commit }, value) {
+    // ⚠️ TODO: finish this...
+    const { i, path } = value;
+    const code = await getFileContents(path.join(__dirname, path));
+    commit("setModel", {
+      tab: i,
+      model: monaco.editor.createModel(code, "javascript"),
+    });
+  },
+};
 
 const getters = {
   initialTab: (state) =>
-    localStorage.getItem("lastActiveTab") /* .title */ || state.list[0].title,
+    localStorage.getItem("lastActiveTab") /* .title */ || state.list[0],
 };
 
 export default {

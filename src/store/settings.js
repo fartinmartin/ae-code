@@ -2,9 +2,6 @@ import isJSON from "../helpers/isJSON";
 const LocalStorage = window.localStorage;
 
 const state = {
-  info:
-    "// This settings.js file exposes all Monaco Editor options (https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.ieditorconstructionoptions.html)",
-
   user: {
     fontSize: "16px",
     tabSize: 2,

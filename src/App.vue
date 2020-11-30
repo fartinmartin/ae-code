@@ -30,8 +30,13 @@ export default {
 
   mounted() {
     // on cold start, make sure route is synced with displayed tab!
-    this.$route.params.title !== this.initialTab &&
-      this.$router.push({ path: this.initialTab });
+    if (this.$route.params.path !== this.initialTab.path) {
+      this.$router.push({
+        params: { title: this.initialTab.title, path: this.initialTab.path },
+      });
+    }
+
+    this.$store.dispatch("tabs/getModels");
 
     // TODO: pull all state from LocalStorage 🤷‍♂️ (tab list, last active tab, etc)
     // is this the firstRun (via cookie or just localstorage?) then open a tab with the relevant JSX example and a tab for settings
