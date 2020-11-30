@@ -52,4 +52,13 @@ Alternatively, create your own ZXP:
 - VS Code-like mini menu on bottom for resources
 - Support keyboard shortcuts that conflict with host apps (`Del`, `Cmd + /`, `Cmd + S`, etc...)
 - Console/output panel
+- A user settings object for file arrays to auto import based on host app\*
 - Side panel file explorer?
+
+<sup>\*was thinking this would include things like helper functions (converting color to floats, etc.), and imported functions would show up in Monaco's intellisense? might look something like:</sup>
+
+```
+imports: {
+ AEFT: ['~/Documents/Adobe/⁨myScriptHelpers.jsx']
+}
+```
