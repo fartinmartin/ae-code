@@ -1,6 +1,8 @@
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { host } from "../globals";
 import getFileContents from "../helpers/getFileContents";
+import router from "../router";
+
 const path = require("path");
 
 const state = {
@@ -32,6 +34,10 @@ const mutations = {
   setTitle(state, { tab, title }) {
     state.list[tab].title = title;
   },
+
+  addTab(state, tab) {
+    state.list.push(tab);
+  },
 };
 
 const actions = {
@@ -45,19 +51,39 @@ const actions = {
     });
   },
 
-  async getModel({ commit }, value) {
-    // ⚠️ TODO: finish this...
-    const { i, path } = value;
-    const code = await getFileContents(path.join(__dirname, path));
-    commit("setModel", {
-      tab: i,
-      model: monaco.editor.createModel(code, "javascript"),
-    });
-  },
+  // async getModel({ commit }, value) {
+  //   // ⚠️ TODO: finish this...
+  //   const { i, path } = value;
+  //   const code = await getFileContents(path.join(__dirname, path));
+  //   commit("setModel", {
+  //     tab: i,
+  //     model: monaco.editor.createModel(code, "javascript"),
+  //   });
+  // },
 
   setTitle({ commit }, { tab, title }) {
     commit("setTitle", { tab, title });
     this.$router.push({ params: { title, path: tab.path } }); // may be unnecessary?
+  },
+
+  addTab({ commit, getters }, payload) {
+    let tab;
+
+    if (!payload) {
+      tab = {
+        title: getters.getUniqueUntitled,
+        path: `tmp/${Date.now()}.jsx`,
+        monaco: {
+          model: monaco.editor.createModel("", "javascript"),
+          state: null,
+        },
+      };
+    } else {
+      tab = payload;
+    }
+
+    commit("addTab", tab);
+    router.push({ params: { title: tab.title, path: tab.path } });
   },
 };
 
@@ -66,8 +92,8 @@ const getters = {
     localStorage.getItem("lastActiveTab") /* .title */ || state.list[0],
 
   getUniqueUntitled: (state) => {
-    const n = state.list.filter((tab) => tab.title.includes("untitled"));
-    return `untitled_${n.padStart(2, "0")}.jsx`;
+    const n = 1 + state.list.filter((t) => t.title.includes("untitled")).length;
+    return `untitled_${n.toString().padStart(2, "0")}.jsx`;
   },
 
   getTabByPath: (state) => (path) =>

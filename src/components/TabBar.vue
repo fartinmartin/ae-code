@@ -27,7 +27,6 @@ export default {
 
   computed: {
     ...mapState("tabs", { tabs: (state) => state.list }),
-
     ...mapGetters("settings", ["settings"]),
 
     style() {
@@ -37,7 +36,7 @@ export default {
 
   methods: {
     addTab() {
-      // dispatch addTab w paylout: temp tab
+      this.$store.dispatch("tabs/addTab");
     },
   },
 };
