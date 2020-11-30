@@ -8,7 +8,7 @@
           :to="{ params: { title: tab.title, path: tab.path } }"
           :tab="tab"
         />
-        <!-- TODO: <button>+</button> -->
+        <button class="tab" @click="addTab">+</button>
       </div>
     </div>
   </div>
@@ -34,10 +34,16 @@ export default {
       return `font-size: ${this.settings.fontSize};`;
     },
   },
+
+  methods: {
+    addTab() {
+      // dispatch addTab w paylout: temp tab
+    },
+  },
 };
 </script>
 
-<style scoped>
+<style>
 .tab-bar {
   --tab-text: #848484;
   --tab-text--active: #ffffff;
@@ -84,5 +90,14 @@ export default {
 .tabs {
   height: 100%;
   display: flex;
+}
+
+button.tab {
+  padding-right: 1em;
+  color: var(--tab-text);
+}
+
+button.tab:hover {
+  color: var(--tab-text--active);
 }
 </style>

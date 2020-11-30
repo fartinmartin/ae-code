@@ -40,7 +40,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 button,
 input {
   border: none;
@@ -52,6 +52,12 @@ input {
   font-weight: inherit;
   color: inherit;
   line-height: 1;
+  cursor: pointer;
+}
+
+button:focus,
+input:focus {
+  outline: none;
 }
 
 .tab * {
