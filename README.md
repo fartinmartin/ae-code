@@ -32,7 +32,7 @@ Alternatively, create your own ZXP:
 
 4. Install with [ZXP Installer](https://aescripts.com/learn/zxp-installer/)
 
-   > <sup>⚠️ Heads up! For some reason (at least on macOS) installing a ZXP with ZXP Installer wipes out any directory inside of `~/Library⁩/Application Support/Adobe/⁨CEP⁩/extensions`—be sure to have a backup!</sup>
+   > <sup>⚠️ Heads up! For some reason (at least on macOS) installing a ZXP with ZXP Installer wipes out any non-Adobe made directory inside of `~/Library⁩/Application Support/Adobe/⁨CEP⁩/extensions`—be sure to have a backup!</sup>
 
 ### Serve a live version
 
