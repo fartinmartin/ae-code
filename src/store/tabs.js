@@ -28,6 +28,10 @@ const mutations = {
   setModel(state, { tab, model }) {
     state.list[tab].monaco.model = model;
   },
+
+  setTitle(state, { tab, title }) {
+    state.list[tab].title = title;
+  },
 };
 
 const actions = {
@@ -50,11 +54,24 @@ const actions = {
       model: monaco.editor.createModel(code, "javascript"),
     });
   },
+
+  setTitle({ commit }, { tab, title }) {
+    commit("setTitle", { tab, title });
+    this.$router.push({ params: { title, path: tab.path } }); // may be unnecessary?
+  },
 };
 
 const getters = {
   initialTab: (state) =>
     localStorage.getItem("lastActiveTab") /* .title */ || state.list[0],
+
+  getUniqueUntitled: (state) => {
+    const n = state.list.filter((tab) => tab.title.includes("untitled"));
+    return `untitled_${n.padStart(2, "0")}.jsx`;
+  },
+
+  getTabByPath: (state) => (path) =>
+    state.list.find((tab) => tab.path === path),
 };
 
 export default {
