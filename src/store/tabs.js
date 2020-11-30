@@ -38,6 +38,10 @@ const mutations = {
   addTab(state, tab) {
     state.list.push(tab);
   },
+
+  removeTab(state, tab) {
+    state.list = state.list.filter((t) => t != tab);
+  },
 };
 
 const actions = {
@@ -84,6 +88,12 @@ const actions = {
 
     commit("addTab", tab);
     router.push({ params: { title: tab.title, path: tab.path } });
+  },
+
+  closeTab({ commit, state, dispatch }, { tab, reRouteMe }) {
+    if (reRouteMe) router.go(-1);
+    commit("removeTab", tab);
+    if (!state.list.length) dispatch("addTab");
   },
 };
 

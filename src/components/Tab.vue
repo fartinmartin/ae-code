@@ -11,7 +11,7 @@
     />
     <div class="tab-actions">
       <button v-if="!saved" class="tab-unsaved">•</button>
-      <button v-else class="tab-close">×</button>
+      <button v-else class="tab-close" @click="closeTab">×</button>
     </div>
     <div class="bottom-border"></div>
   </router-link>
@@ -35,6 +35,13 @@ export default {
 
     saved() {
       return true; // diff current value to saved value, perhaps this is a computed value
+    },
+  },
+
+  methods: {
+    closeTab() {
+      const reRouteMe = this.tab.path === this.$route.params.path;
+      this.$store.dispatch("tabs/closeTab", { tab: this.tab, reRouteMe });
     },
   },
 };
