@@ -15,24 +15,12 @@ const state = {
         state: null,
       },
     },
-    {
-      title: "settings.js",
-      path: `src/assets/settings.js`,
-      monaco: {
-        model: null,
-        state: null,
-      },
-    },
   ],
 };
 
 const mutations = {
   setModel(state, { tab, model }) {
     state.list[tab].monaco.model = model;
-  },
-
-  setTitle(state, { tab, title }) {
-    state.list[tab].title = title;
   },
 
   addTab(state, tab) {
@@ -42,9 +30,20 @@ const mutations = {
   removeTab(state, tab) {
     state.list = state.list.filter((t) => t != tab);
   },
+
+  // TODO:
+  // setTitle(state, { tab, title }) {
+  //   state.list[tab].title = title;
+  // },
 };
 
 const actions = {
+  // TODO:
+  // setTitle({ commit }, { tab, title }) {
+  //   commit("setTitle", { tab, title });
+  //   this.$router.push({ params: { title, path: tab.path } }); // may be unnecessary?
+  // },
+
   getModels({ state, commit }) {
     state.list.forEach(async (tab, i) => {
       const code = await getFileContents(path.join(__dirname, tab.path)); // "__dirname" will probs break if file saved outside of extention dir, right?
@@ -55,27 +54,12 @@ const actions = {
     });
   },
 
-  // async getModel({ commit }, value) {
-  //   // ⚠️ TODO: finish this...
-  //   const { i, path } = value;
-  //   const code = await getFileContents(path.join(__dirname, path));
-  //   commit("setModel", {
-  //     tab: i,
-  //     model: monaco.editor.createModel(code, "javascript"),
-  //   });
-  // },
-
-  setTitle({ commit }, { tab, title }) {
-    commit("setTitle", { tab, title });
-    this.$router.push({ params: { title, path: tab.path } }); // may be unnecessary?
-  },
-
   addTab({ commit, getters }, payload) {
     let tab;
 
     if (!payload) {
       tab = {
-        title: getters.getUniqueUntitled,
+        title: getters.uniqueUntitled,
         path: `tmp/${Date.now()}.jsx`,
         monaco: {
           model: monaco.editor.createModel("", "javascript"),
@@ -95,6 +79,33 @@ const actions = {
     if (reRouteMe) router.go(-1);
     commit("removeTab", tab);
     if (!state.list.length) dispatch("addTab");
+    // save settings to local storage?
+  },
+
+  openFile({ getters, dispatch }, tab) {
+    if (getters.tabByPath(tab.path))
+      router.push({ params: { title: tab.title, path: tab.path } });
+    else dispatch("addTab", tab);
+  },
+
+  saveFile({ dispatch }, tab) {
+    if (tab.path === `src/assets/settings.json`)
+      dispatch("settings/saveSettings", tab, { root: true });
+  },
+
+  createSettingsTab({ commit }) {
+    const raw = localStorage.getItem("settings"); // but wait, what happens on a cold start? this should pull from state instead, right?
+    const obj = JSON.parse(raw);
+    const model = JSON.stringify(obj, null, obj.tabSize || 2);
+    const tab = {
+      title: "settings.json",
+      path: `src/assets/settings.json`,
+      monaco: {
+        model: monaco.editor.createModel(model, "json"),
+        state: null,
+      },
+    };
+    commit("addTab", tab);
   },
 };
 
@@ -102,13 +113,12 @@ const getters = {
   initialTab: (state) =>
     localStorage.getItem("lastActiveTab") /* .title */ || state.list[0],
 
-  getUniqueUntitled: (state) => {
+  uniqueUntitled: (state) => {
     const n = 1 + state.list.filter((t) => t.title.includes("untitled")).length;
     return `untitled_${n.toString().padStart(2, "0")}.jsx`;
   },
 
-  getTabByPath: (state) => (path) =>
-    state.list.find((tab) => tab.path === path),
+  tabByPath: (state) => (path) => state.list.find((tab) => tab.path === path),
 };
 
 export default {

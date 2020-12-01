@@ -10,7 +10,8 @@
     "switch": "bombino-cmd switch",
     "update": "bombino-cmd update",
     "register": "bombino-cmd register",
-    "help": "bombino-cmd help"
+    "help": "bombino-cmd help",
+    "cef": "echo 'http://localhost:8889' | pbcopy && open /Applications/CEFclient_CEP/cefclient.app && vue-cli-service serve"
   },
   "dependencies": {
     "@babel/standalone": "^7.12.6",

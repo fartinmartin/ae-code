@@ -49,11 +49,11 @@ Alternatively, create your own ZXP:
 - Continue to steal from [ovid](https://github.com/Inventsable/ovid-editor)...
 - User settings (any monaco editor options)
 - I/O features (save, save as, open)
-- VS Code-like mini menu on bottom for resources
+- VS Code-like mini menu (status bar!) on bottom for resources
 - Support keyboard shortcuts that conflict with host apps (`Del`, `Cmd + /`, `Cmd + S`, etc...)
 - Console/output panel
-- A user settings object for file arrays to auto import based on host app\*
-- Side panel file explorer?
+- A user settings object for file arrays to auto import (addExtraLib()?) based on host app\*
+- Side panel file explorer? Pickwhip? "current selected object can do these things..." window?
 
 <sup>\*was thinking this would include things like helper functions (converting color to floats, etc.), and imported functions would show up in Monaco's intellisense? might look something like:</sup>
 

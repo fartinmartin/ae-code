@@ -1,7 +1,22 @@
-import isJSON from "../helpers/isJSON";
-const LocalStorage = window.localStorage;
-
 const state = {
+  // temp, default state should be the same as what shows up in settings.json tab and a copy should be stored in resetSettings() action:
+  json: `{
+    "___⚠️ settings.json___": [
+      "Hello! Welcome to ae-code. This is the settings.json",
+      "file where you can tweak (mostly visual) options by",
+      "adding/removing key-vaule pairs to this object.",
+      "",
+      "For a full list of options, check out the README.md:",
+      "https://github.com/fartinmartin/ae-code#settings.js"
+    ],
+    "fontSize": "16px",
+    "tabSize": 2,
+    "theme": "vs-dark",
+    "minimap": {
+      "enabled": false
+    }
+  }`,
+
   user: {
     fontSize: "16px",
     tabSize: 2,
@@ -38,29 +53,30 @@ const state = {
     autoIndent: true,
     formatOnPaste: true,
     formatOnType: true,
-    language: "javascript", // TBD: should this be allowed to be "typescript" based on file extension?
   },
 };
 
 const mutations = {
   setSettings(state, value) {
-    state.settings.user = value;
+    state.user = value;
   },
 };
 
 const actions = {
   getSettings({ commit }) {
-    let settings = LocalStorage.getItem("settings");
-    if (settings)
-      commit("setSettings", isJSON(settings) ? JSON.parse(settings) : settings);
+    const settings = JSON.parse(localStorage.getItem("settings"));
+    if (settings) commit("setSettings", settings);
   },
 
-  saveSettings({ state }) {
-    LocalStorage.setItem("settings", JSON.stringify(state.user));
+  saveSettings({ state, commit }, tab) {
+    const userSettings = JSON.parse(tab.monaco.model.getValue());
+    commit("setSettings", userSettings);
+    localStorage.setItem("settings", JSON.stringify(state.user));
+    location.reload();
   },
 
   deleteSettings({ dispatch, state }) {
-    LocalStorage.removeItem(state.user);
+    localStorage.removeItem(state.user);
     dispatch("resetSettings");
   },
 

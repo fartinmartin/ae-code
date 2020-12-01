@@ -29,17 +29,18 @@ export default {
   },
 
   mounted() {
+    // TODO: pull all state from localStorage (user settings ✅, tab list, last active tab, etc)
+    this.$store.dispatch("settings/getSettings");
+    this.$store.dispatch("tabs/getModels");
+    this.$store.dispatch("tabs/createSettingsTab"); // could be behind a is first run? check 🤷‍♂️
+    // this.$store.dispatch("tabs/createExampleTab"); // could be behind a is first run? check 🤷‍♂️
+
     // on cold start, make sure route is synced with displayed tab!
     if (this.$route.params.path !== this.initialTab.path) {
       this.$router.push({
         params: { title: this.initialTab.title, path: this.initialTab.path },
       });
     }
-
-    this.$store.dispatch("tabs/getModels");
-
-    // TODO: pull all state from LocalStorage 🤷‍♂️ (tab list, last active tab, etc)
-    // is this the firstRun (via cookie or just localstorage?) then open a tab with the relevant JSX example and a tab for settings
   },
 };
 </script>

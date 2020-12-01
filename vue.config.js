@@ -8,7 +8,7 @@ module.exports = {
     plugins: [
       new MonacoWebpackPlugin({
         // https://github.com/Microsoft/monaco-editor-webpack-plugin#options
-        languages: ["javascript", "typescript"],
+        languages: ["javascript", "typescript", "json"],
       }),
     ],
   },

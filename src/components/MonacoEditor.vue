@@ -13,11 +13,6 @@ export default {
   name: "MonacoEditor",
 
   props: {
-    language: {
-      type: String,
-      default: "javascript",
-    },
-
     title: String, // comes from router.js
   },
 
@@ -42,7 +37,7 @@ export default {
 
     tab() {
       const activeTab = this.tabs.find((tab) => tab.title === this.title);
-      return activeTab ? activeTab.monaco : this.initialTab.monaco;
+      return activeTab ? activeTab : this.initialTab;
     },
 
     style() {
@@ -76,9 +71,9 @@ export default {
       );
 
       this.editor = monaco.editor.create(this.$el, this.settings);
-      this.editor.getModel().updateOptions({ tabSize: this.settings.tabSize });
+      this.editor.updateOptions({ tabSize: this.settings.tabSize });
 
-      this.editor.setModel(this.tab.model); // inits the active tab (for first time start up aka when no route is navigated to via a tab click)
+      this.editor.setModel(this.tab.monaco.model); // inits the active tab (for first time start up aka when no route is navigated to via a tab click)
       this.addActions();
     },
 
@@ -126,29 +121,26 @@ export default {
         contextMenuOrder: 2.1,
         run: () => location.reload(),
       });
-    },
 
-    // TODO: FILESYSTEM STUFF
-    saveFile() {},
-
-    // TODO: TABS ACTIONS
-    // should start by building this functionality within <tab-bar />, i think
-
-    addTab() {
-      /* 1. add tab to vuex store 2. push new tab to $router */
-    },
-
-    closeTab() {
-      /* 1. remove tab from vuex store 2. push prev tab (tabs[tabs.indexOf(thisTab-1)]) to $router */
+      this.editor.addAction({
+        id: "save",
+        label: "Save",
+        keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S],
+        contextMenuGroupId: "io",
+        contextMenuOrder: 0.1,
+        run: () => this.$store.dispatch("tabs/saveFile", this.tab),
+      });
     },
   },
 
   watch: {
     tab(tab, prevTab) {
       if (!this.editor) return;
-      prevTab.state = this.editor.saveViewState();
-      this.editor.setModel(tab.model);
-      this.editor.restoreViewState(tab.state);
+      prevTab.monaco.state = this.editor.saveViewState();
+      this.editor.setModel(tab.monaco.model);
+      this.editor.restoreViewState(tab.monaco.state);
+      // if (this.$route.params.path === `src/assets/settings.json`)
+      //   this.editor.trigger("anyString", "editor.action.formatDocument");
       this.editor.focus();
     },
   },
