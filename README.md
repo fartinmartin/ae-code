@@ -8,7 +8,7 @@ This is a rip-off of [ovid](https://github.com/Inventsable/ovid-editor) by [Tom 
 
 ## Features
 
-- Run and edit code inside an Adobe host app
+- Run and edit code inside After Effects, Illustrator, Photoshop, Premiere, InDesign, Audition, and Animate
 - Hinting and auto completion based on [types-for-adobe](https://github.com/pravdomil/types-for-adobe)
 - Automatic ES6 compilation for any ECMA methods that Adobe CEP panels don't support
 - Tabs for editing multiple scripts
