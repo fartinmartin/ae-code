@@ -24,15 +24,22 @@ export default {
   },
 
   computed: {
-    ...mapState("tabs", { tabs: (state) => state.list }),
+    ...mapState("tabs", {
+      tabs: (state) => state.list,
+      session: (state) => state.session,
+    }),
     ...mapGetters("tabs", ["initialTab"]),
   },
 
   mounted() {
+    window.onbeforeunload = () => this.$store.dispatch("tabs/saveSession");
+
     // TODO: pull all state from localStorage (user settings ✅, tab list, last active tab, etc)
+    // this.$store.dispatch("settings/deleteSettings");
     this.$store.dispatch("settings/getSettings");
+    this.$store.dispatch("tabs/getSession");
     this.$store.dispatch("tabs/getModels");
-    this.$store.dispatch("tabs/createSettingsTab"); // could be behind a is first run? check 🤷‍♂️
+    // this.$store.dispatch("tabs/createSettingsTab"); // could be behind a is first run? check 🤷‍♂️
     // this.$store.dispatch("tabs/createExampleTab"); // could be behind a is first run? check 🤷‍♂️
 
     // on cold start, make sure route is synced with displayed tab!

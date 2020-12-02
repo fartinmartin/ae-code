@@ -31,6 +31,10 @@ const mutations = {
     state.list = state.list.filter((t) => t != tab);
   },
 
+  setSession(state, session) {
+    state.list = session.tabs;
+  },
+
   // TODO:
   // setTitle(state, { tab, title }) {
   //   state.list[tab].title = title;
@@ -44,9 +48,20 @@ const actions = {
   //   this.$router.push({ params: { title, path: tab.path } }); // may be unnecessary?
   // },
 
+  getSession({ commit }) {
+    const session = JSON.parse(localStorage.getItem("session"));
+    console.log(session);
+    if (session) commit("setSession", session);
+  },
+
   getModels({ state, commit }) {
     state.list.forEach(async (tab, i) => {
-      const code = await getFileContents(path.join(__dirname, tab.path)); // "__dirname" will probs break if file saved outside of extention dir, right?
+      let code;
+      try {
+        code = await getFileContents(path.join(__dirname, tab.path)); // TODO: "__dirname" will probs break if file saved outside of extention dir, right?
+      } catch (error) {
+        code = "";
+      }
       commit("setModel", {
         tab: i,
         model: monaco.editor.createModel(code, "javascript"),
@@ -93,25 +108,32 @@ const actions = {
       dispatch("settings/saveSettings", tab, { root: true });
   },
 
-  createSettingsTab({ commit }) {
-    const raw = localStorage.getItem("settings"); // but wait, what happens on a cold start? this should pull from state instead, right?
-    const obj = JSON.parse(raw);
-    const model = JSON.stringify(obj, null, obj.tabSize || 2);
-    const tab = {
+  saveSession({ state, getters }) {
+    const simpleTabs = state.list.map((tab) => ({ ...tab, monaco: {} }));
+    const session = { tabs: simpleTabs, active: getters.activeTab };
+    localStorage.setItem("session", JSON.stringify(session));
+  },
+
+  createSettingsTab({ commit, rootState }) {
+    const obj = rootState.settings.user;
+    const string = JSON.stringify(obj, null, obj.tabSize || 2);
+
+    commit("addTab", {
       title: "settings.json",
       path: `src/assets/settings.json`,
       monaco: {
-        model: monaco.editor.createModel(model, "json"),
+        model: monaco.editor.createModel(string, "json"),
         state: null,
       },
-    };
-    commit("addTab", tab);
+    });
   },
 };
 
 const getters = {
-  initialTab: (state) =>
-    localStorage.getItem("lastActiveTab") /* .title */ || state.list[0],
+  initialTab: (state, getters) => {
+    getters.tabByPath(localStorage.getItem("session").activeTab) ||
+      state.list[0];
+  },
 
   uniqueUntitled: (state) => {
     const n = 1 + state.list.filter((t) => t.title.includes("untitled")).length;
@@ -119,6 +141,11 @@ const getters = {
   },
 
   tabByPath: (state) => (path) => state.list.find((tab) => tab.path === path),
+
+  activeTab: (state, getters) => {
+    const tab = getters.tabByPath(router.history.current.params.path);
+    return state.list.indexOf(tab);
+  },
 };
 
 export default {
