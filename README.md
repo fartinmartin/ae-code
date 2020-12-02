@@ -2,9 +2,9 @@
 
 An Adobe panel providing ~~the most advanced~~ a scripting environment for in-app code editing.
 
-This is a rip off of [ovid](https://github.com/Inventsable/ovid-editor) by [Tom Scharstein](https://github.com/Inventsable) (even the above description mostly comes from his project 😬). I made this because I wanted to change the font size of the ovid-editor. And then I wanted to learn how it was made! I also share Tom's motivation:
+This is a rip-off of [ovid](https://github.com/Inventsable/ovid-editor) by [Tom Scharstein](https://github.com/Inventsable) (even the above description mostly comes from his project 😬). I made this because I wanted to change the font size of the ovid-editor. And then I wanted to learn how it was made! This project share's the same motivations as ovid's:
 
-> The goal of this panel is to lessen the burden to entry for any one curious about scripting while also providing a sophisticated environment for any one experienced to sandbox snippets within, all with absolutely no setup required.
+> The goal of this panel is to lessen the barriers to entry for any one curious about Adobe scripting, while also providing a sophisticated environment to write code quickly and with absolutely no setup required.
 
 ## Features
 
@@ -12,6 +12,7 @@ This is a rip off of [ovid](https://github.com/Inventsable/ovid-editor) by [Tom 
 - Hinting and auto completion based on [types-for-adobe](https://github.com/pravdomil/types-for-adobe)
 - Automatic ES6 compilation for any ECMA methods that Adobe CEP panels don't support
 - Tabs for editing multiple scripts
+- User settings (i.e. exposure to Monaco's [editor options](https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.ieditoroptions.html)) 
 
 ## Get started
 
@@ -47,9 +48,8 @@ Alternatively, create your own ZXP:
 ## Todos
 
 - Continue to steal from [ovid](https://github.com/Inventsable/ovid-editor)...
-- User settings (any monaco editor options)
 - I/O features (save, save as, open)
-- VS Code-like mini menu (status bar!) on bottom for resources
+- VS Code-like mini menu (status bar!) on bottom for ae-code-related HUD and app-specific [resources](https://github.com/Inventsable/ovid-editor/blob/master/src/components/editor/drawer.vue#L37)
 - Support keyboard shortcuts that conflict with host apps (`Del`, `Cmd + /`, `Cmd + S`, etc...)
 - Console/output panel
 - A user settings object for file arrays to auto import (addExtraLib()?) based on host app\*
