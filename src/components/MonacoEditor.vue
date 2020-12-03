@@ -4,7 +4,7 @@
 
 <script>
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
-import { mapGetters, mapState } from "vuex";
+import { mapGetters } from "vuex";
 import getFileContents from "../helpers/getFileContents";
 
 const path = require("path"); // https://shapeshed.com/writing-cross-platform-node/#use-the-os-module-for-more-control
@@ -32,13 +32,7 @@ export default {
 
   computed: {
     ...mapGetters("settings", ["settings"]),
-    ...mapGetters("tabs", ["initialTab"]),
-    ...mapState("tabs", { tabs: (state) => state.list }),
-
-    tab() {
-      const activeTab = this.tabs.find((tab) => tab.title === this.title);
-      return activeTab ? activeTab : this.initialTab;
-    },
+    ...mapGetters("tabs", { tab: "activeTab" }),
 
     style() {
       return `width: 100%; height: calc(100% - 2.25em); margin-top: 2.25em; font-size: ${this.settings.fontSize};`; // not sold on 2.275em, i think tabbar needs an explicit height (set in ems) and its contents dispersed through that height...
@@ -139,8 +133,6 @@ export default {
       prevTab.monaco.state = this.editor.saveViewState();
       this.editor.setModel(tab.monaco.model);
       this.editor.restoreViewState(tab.monaco.state);
-      // if (this.$route.params.path === `src/assets/settings.json`)
-      //   this.editor.trigger("anyString", "editor.action.formatDocument");
       this.editor.focus();
     },
   },

@@ -12,7 +12,7 @@ This is a rip-off of [ovid](https://github.com/Inventsable/ovid-editor) by [Tom 
 - Hinting and auto completion based on [types-for-adobe](https://github.com/pravdomil/types-for-adobe)
 - Automatic ES6 compilation for any ECMA methods that Adobe CEP panels don't support
 - Tabs for editing multiple scripts
-- User settings (i.e. exposure to Monaco's [editor options](https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.ieditoroptions.html)) 
+- User settings (i.e. exposure to Monaco's [editor options](https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.ieditoroptions.html))
 
 ## Get started
 
@@ -44,6 +44,30 @@ Alternatively, create your own ZXP:
 2. `cd ae-code && npm i && npm run serve`
 3. [Edit CXSX plist file](https://github.com/Adobe-CEP/CEP-Resources/blob/master/CEP_10.x/Documentation/CEP%2010.0%20HTML%20Extension%20Cookbook.md#debugging-unsigned-extensions)
 4. Open After Effects, navigate to `Window > Extensions > ae-code`
+
+## settings.json
+
+Settings are defined as a JSON object. To edit this object open the `settings.json` tab by either:
+
+- Right clicking the editor and selecting Settings
+- Selecting "Settings" in the Adobe panel's flyout menu
+- Opening the command palette () > Settings
+
+## Data flows
+
+### Tabs and `<router-view />`
+
+Each tab is it's own route. The route params include the tab's `title` and it's source file's `path`. The `path` is used to create a new `model` for the Monaco Editor instance using [`monaco.editor.createModel()`](https://github.com/fartinmartin/ae-code/blob/413f2108daee43e2d8f3914523fac1ee4090f49a/src/store/tabs.js#L57). The [`MonacoEditor.vue`](https://github.com/fartinmartin/ae-code/blob/tab-bar/src/components/MonacoEditor.vue) component `watch()`es for the route changes, and updates the Mondaco Editor instance to the correct model using [`monaco.editor.setModel()`](https://github.com/fartinmartin/ae-code/blob/413f2108daee43e2d8f3914523fac1ee4090f49a/src/components/MonacoEditor.vue#L136). It also stores the `viewState` (scroll position, active selection, etc.) of the previous tab! Basically, ROUTER defines active tab.
+
+### `settings.json` and persistent state with `localStorage`
+
+`settings.json` is just like any other tab, _except_ users cannot save it to a new location. This is because it exsists solely as state in the Vuex store.
+
+### New/untitled tabs
+
+- ✅ getters.activeTab = route.history.current
+- ✅ session.activeTab w/o model stored to localStorage on panel refresh OR close
+- on App mounted() pull session, load tabs into state, getModels() and finally set route to session.activeTab
 
 ## Todos
 

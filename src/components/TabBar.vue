@@ -1,5 +1,5 @@
 <template>
-  <div class="tab-bar" :style="style">
+  <div class="tab-bar" :style="fontSize + colors">
     <div class="scrollable-container">
       <div class="tabs">
         <router-tab
@@ -30,9 +30,23 @@ export default {
     ...mapState("tabs", { tabs: (state) => state.list }),
     ...mapGetters("settings", ["settings"]),
 
-    style() {
+    fontSize() {
       return `font-size: ${this.settings.fontSize};`;
     },
+
+    colors() {
+      let colors = "";
+      const toKebabCase = (k, v) =>
+        `--${k.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase()}: ${v};`;
+      for (const [key, value] of Object.entries(this.settings.colors)) {
+        colors = colors + toKebabCase(key, value);
+      }
+      return colors;
+    },
+  },
+
+  mounted() {
+    console.log(this.fontSize, this.colors);
   },
 
   methods: {
@@ -44,23 +58,6 @@ export default {
 </script>
 
 <style>
-.tab-bar {
-  --tab-text: #848484;
-  --tab-text--active: #ffffff;
-  --tab-text--hover: #848484;
-
-  --tab-background: #1e1e1e;
-  --tab-background--active: #1e1e1e;
-  --tab-background--hover: #1e1e1e;
-
-  --tab-border: #242424;
-  --tab-border--active: #569cd6;
-  --tab-border--hover: #242424;
-
-  --tab-bar-background: #1e1e1e;
-  --tab-bar-border: #242424;
-}
-
 .tab-bar {
   position: fixed;
   z-index: 1000;
@@ -98,7 +95,7 @@ button.tab {
 }
 
 button.tab:hover {
-  color: var(--tab-text--active);
+  color: var(--tab-text-active);
 }
 </style>
 

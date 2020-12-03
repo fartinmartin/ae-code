@@ -34,7 +34,7 @@ export default {
     },
 
     saved() {
-      return true; // diff current value to saved value, perhaps this is a computed value
+      return true; // diff current value to saved value?
     },
   },
 
@@ -85,7 +85,7 @@ input:focus {
 }
 
 .tab:hover {
-  background: var(--tab-background--hover);
+  background: var(--tab-background-hover);
 }
 
 .tab:hover .tab-close {
@@ -93,11 +93,11 @@ input:focus {
 }
 
 .tab:hover .tab-label {
-  color: var(--tab-text--hover);
+  color: var(--tab-text-hover);
 }
 
 .tab.active {
-  background: var(--tab-background--active);
+  background: var(--tab-background-active);
 }
 
 .tab.active .tab-label {
@@ -105,11 +105,11 @@ input:focus {
 }
 
 .tab.active .bottom-border {
-  background: var(--tab-border--active);
+  background: var(--tab-border-active);
 }
 
 .tab.active .tab-label {
-  color: var(--tab-text--active);
+  color: var(--tab-text-active);
 }
 
 .tab-label {

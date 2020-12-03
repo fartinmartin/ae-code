@@ -17,6 +17,7 @@
     "@babel/standalone": "^7.12.6",
     "cep-spy": "latest",
     "core-js": "^3.1.2",
+    "file-dialog": "0.0.8",
     "lokney": "latest",
     "monaco-editor": "^0.21.2",
     "monaco-editor-webpack-plugin": "^2.0.0",

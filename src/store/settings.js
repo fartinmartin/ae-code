@@ -1,15 +1,8 @@
-import defaultUserSettings from "../assets/defaultUserSettings";
-const state = {
-  user: defaultUserSettings,
+import { defaults, userDefaults } from "../assets/settings";
 
-  defaults: {
-    automaticLayout: true, // this is how monaco handles responsiveness/resizing
-    scrollBeyondLastLine: false,
-    lineNumbersMinChars: 4,
-    autoIndent: true,
-    formatOnPaste: true,
-    formatOnType: true,
-  },
+const state = {
+  user: userDefaults,
+  defaults,
 };
 
 const mutations = {
@@ -24,9 +17,9 @@ const actions = {
     if (settings) commit("setSettings", settings);
   },
 
-  saveSettings({ state, commit }, tab) {
-    const userSettings = JSON.parse(tab.monaco.model.getValue());
-    commit("setSettings", userSettings);
+  saveSettings({ state, commit }, settings) {
+    // const settings = JSON.parse(tab.monaco.model.getValue()); // don't pass the tab to this function, just pass the value!
+    commit("setSettings", settings);
     localStorage.setItem("settings", JSON.stringify(state.user));
     location.reload();
   },
@@ -37,7 +30,7 @@ const actions = {
   },
 
   resetSettings({ commit }) {
-    commit("setSettings", defaultUserSettings);
+    commit("setSettings", userDefaults);
   },
 };
 
