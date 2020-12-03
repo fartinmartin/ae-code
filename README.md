@@ -4,7 +4,7 @@ An Adobe panel providing ~~the most advanced~~ a scripting environment for in-ap
 
 This is a rip-off of [ovid](https://github.com/Inventsable/ovid-editor) by [Tom Scharstein](https://github.com/Inventsable) (even the above description mostly comes from his project 😬). I made this because I wanted to change the font size of the ovid-editor. And then I wanted to learn how it was made! This project share's the same motivations as ovid's:
 
-> The goal of this panel is to lessen the barriers to entry for any one curious about Adobe scripting, while also providing a sophisticated environment to write code quickly and with absolutely no setup required.
+> The goal of this panel is to lessen the barriers to entry for any one curious about Adobe scripting by providing a sophisticated environment to write code quickly and with absolutely no setup required.
 
 ## Features
 
