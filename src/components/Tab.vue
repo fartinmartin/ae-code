@@ -5,12 +5,12 @@
       type="text"
       class="tab-label"
       :value="tab.title"
-      :disabled="!active"
+      :disabled="!isActive"
       :size="Math.max(tab.title.length, 4)"
       spellcheck="false"
     />
     <div class="tab-actions">
-      <button v-if="!saved" class="tab-unsaved">•</button>
+      <button v-if="!isSaved" class="tab-unsaved">•</button>
       <button v-else class="tab-close" @click="closeTab">×</button>
     </div>
     <div class="bottom-border"></div>
@@ -18,6 +18,8 @@
 </template>
 
 <script>
+import { mapGetters, mapState } from "vuex";
+
 export default {
   name: "Tab",
 
@@ -29,19 +31,26 @@ export default {
   },
 
   computed: {
-    active() {
-      return this.$route.params.title === this.tab.title;
+    ...mapState("tabs", { tabs: "list" }),
+    ...mapGetters("tabs", { activeTab: "activeTab" }),
+
+    isActive() {
+      return this.tab.path === this.$route.params.path;
     },
 
-    saved() {
+    isLastTabOpen() {
+      return this.tabs.length === 1;
+    },
+
+    isSaved() {
       return true; // diff current value to saved value?
     },
   },
 
   methods: {
     closeTab() {
-      const reRouteMe = this.tab.path === this.$route.params.path;
-      this.$store.dispatch("tabs/closeTab", { tab: this.tab, reRouteMe });
+      if (this.isActive && !this.isLastTabOpen) this.$router.go(-1);
+      this.$store.dispatch("tabs/closeTab", this.tab);
     },
   },
 };

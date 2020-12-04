@@ -5,7 +5,7 @@
         <router-tab
           v-for="tab in tabs"
           :key="tab.id"
-          :to="{ params: { title: tab.title, path: tab.path } }"
+          :to="{ name: 'edit', params: { path: tab.path } }"
           :tab="tab"
         />
         <button class="tab" @click="addTab">+</button>
@@ -43,10 +43,6 @@ export default {
       }
       return colors;
     },
-  },
-
-  mounted() {
-    console.log(this.fontSize, this.colors);
   },
 
   methods: {

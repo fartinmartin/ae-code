@@ -1,4 +1,4 @@
-import fileDialog from "file-dialog";
+// import fileDialog from "file-dialog";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { host } from "../globals";
 import getFileContents from "../helpers/getFileContents";
@@ -11,32 +11,41 @@ const state = {
     {
       title: "example.jsx",
       path: path.join(__dirname, `src/assets/examples/${host.appName}.jsx`), // is it correct to store/access files from the src/ dir while in prod?
-      monaco: {
-        model: null,
-        state: null,
-      },
+      monaco: {},
     },
   ],
 
-  session: null,
+  example: {
+    title: "example.jsx",
+    path: path.join(__dirname, `src/assets/examples/${host.appName}.jsx`), // is it correct to store/access files from the src/ dir while in prod?
+    monaco: {},
+  },
+
+  settings: {
+    title: "settings.json",
+    path: `settings.json`,
+    monaco: {},
+  },
+
+  previous: null,
 };
 
 const mutations = {
-  // setModel(state, { tab, model }) {
-  //   state.list[tab].monaco.model = model;
-  // },
+  setModel(state, { index, model }) {
+    state.list[index].monaco.model = model;
+  },
 
   addTab(state, tab) {
     state.list.push(tab);
   },
 
   removeTab(state, tab) {
-    state.list = state.list.filter((t) => t != tab);
+    state.list = state.list.filter((t) => t.path != tab.path);
   },
 
-  setSession(state, session) {
-    state.list = session.tabs; // dont set session state.. set list state!
-    state.session = { activeTab: session.activeTab }; // an object, because maybe there will be more info to store...
+  setPrevious(state, previous) {
+    state.list = previous.tabs;
+    state.previous = { activeTab: previous.activeTab }; // an object, because maybe there will be more info to store...
   },
 
   // TODO:
@@ -46,24 +55,16 @@ const mutations = {
 };
 
 const actions = {
-  // TODO:
-  // setTitle({ commit }, { tab, title }) {
-  //   commit("setTitle", { tab, title });
-  //   this.$router.push({ params: { title, path: tab.path } }); // may be unnecessary?
-  // },
-
-  getSession({ commit }) {
-    const session = JSON.parse(localStorage.getItem("session"));
-    if (session) commit("setSession", session);
+  getPrevious({ commit }) {
+    const previous = JSON.parse(localStorage.getItem("previous"));
+    if (previous) commit("setPrevious", previous);
   },
 
   getModels({ state, commit }) {
-    state.list.forEach(async (tab, i) => {
-      let code = await getFileContents(path.join(tab.path)); // TODO: "__dirname" will probs break if file saved outside of extention dir, right?
-      commit("setModel", {
-        tab: i,
-        model: monaco.editor.createModel(code, "javascript"),
-      });
+    state.list.forEach(async (tab, index) => {
+      let code = await getFileContents(path.join(tab.path));
+      const model = monaco.editor.createModel(code, "javascript");
+      commit("setModel", { index, model });
     });
   },
 
@@ -84,38 +85,48 @@ const actions = {
     }
 
     commit("addTab", tab);
-    router.push({ params: { title: tab.title, path: tab.path } });
+    router.push({ name: "edit", params: { path: tab.path } });
   },
 
-  closeTab({ commit, state, dispatch }, { tab, reRouteMe }) {
+  closeTab({ commit, state, dispatch }, tab) {
     // TODO: store tab (and it's index within state.list) in a state.history array for "re-open closed tab" functionality
-    if (reRouteMe) router.go(-1);
     commit("removeTab", tab);
     if (!state.list.length) dispatch("addTab");
   },
 
-  async openFile() {
-    const [file] = await fileDialog({ accept: ".jsx, .js" });
-    console.log(file.path);
+  savePrevious({ state, getters }) {
+    const simpleTabs = state.list.map((tab) => ({ ...tab, monaco: {} }));
+    const activeTab = { ...getters.activeTab, monaco: {} };
+    const previous = JSON.stringify({ tabs: simpleTabs, activeTab });
+    localStorage.setItem("previous", previous);
   },
 
-  // openFile({ getters, dispatch }, tab) {
-  //   if (getters.tabByPath(tab.path))
-  //     router.push({ params: { title: tab.title, path: tab.path } });
-  //   else dispatch("addTab", tab);
+  deletePrevious({ commit }) {
+    localStorage.removeItem("previous");
+    commit("setPrevious", { tabs: null, activeTab: null });
+  },
+
+  // TODO:
+  // setTitle({ commit }, { tab, title }) {
+  //   commit("setTitle", { tab, title });
+  //   this.$router.push({ params: { title, path: tab.path } }); // may be unnecessary?
+  // },
+
+  // async openFile({ dispatch }) {
+  //   const [file] = await fileDialog({ accept: ".jsx, .js" });
+  //   const tab = { title: path.basename(file.path), path: file.path };
+  //   if (getters.tabByPath(file.path)) {
+  //     router.push({ params: tab });
+  //   } else {
+  //     dispatch("addTab", tab);
+  //     dispatch("getModels"); // don't get ALL the models! 🤔
+  //   }
   // },
 
   // saveFile({ dispatch }, tab) {
   //   if (tab.path === `src/assets/settings.json`)
   //     dispatch("settings/saveSettings", tab, { root: true });
   // },
-
-  saveSession({ state, getters }) {
-    const simpleTabs = state.list.map((tab) => ({ ...tab, monaco: {} }));
-    const activeTab = { ...getters.activeTab, monaco: {} };
-    const session = JSON.stringify({ tabs: simpleTabs, activeTab });
-    localStorage.setItem("session", session);
-  },
 
   // createSettingsTab({ commit, rootState }) {
   //   const obj = rootState.settings.user;
@@ -141,7 +152,8 @@ const getters = {
   tabByPath: (state) => (path) => state.list.find((tab) => tab.path === path),
 
   activeTab: (state, getters) => {
-    return getters.tabByPath(router.history.current.params.path);
+    const path = router.history.current.params;
+    return getters.tabByPath(path);
   },
 };
 

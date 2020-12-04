@@ -7,7 +7,7 @@ Vue.use(Router);
 export default new Router({
   routes: [
     {
-      path: "/:title?/:path?",
+      path: "/:path?",
       name: "edit",
       component: MonacoEditor,
       props: true,

@@ -13,11 +13,7 @@ export default {
   name: "MonacoEditor",
 
   props: {
-    title: String, // comes from router.js
-  },
-
-  model: {
-    event: "change",
+    path: String, // comes from router.js
   },
 
   data() {
@@ -32,10 +28,14 @@ export default {
 
   computed: {
     ...mapGetters("settings", ["settings"]),
-    ...mapGetters("tabs", { tab: "activeTab" }),
+    ...mapGetters("tabs", { tabByPath: "tabByPath" }),
+
+    tab() {
+      return this.tabByPath(this.path);
+    },
 
     style() {
-      return `width: 100%; height: calc(100% - 2.25em); margin-top: 2.25em; font-size: ${this.settings.fontSize};`; // not sold on 2.275em, i think tabbar needs an explicit height (set in ems) and its contents dispersed through that height...
+      return `width: 100%; height: calc(100% - 2.25em - 1.5em); margin-top: 2.25em; font-size: ${this.settings.fontSize};`;
     },
   },
 
@@ -130,6 +130,7 @@ export default {
   watch: {
     tab(tab, prevTab) {
       if (!this.editor) return;
+      console.log(this.path, tab, prevTab);
       prevTab.monaco.state = this.editor.saveViewState();
       this.editor.setModel(tab.monaco.model);
       this.editor.restoreViewState(tab.monaco.state);

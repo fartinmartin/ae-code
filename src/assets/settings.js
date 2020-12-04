@@ -13,6 +13,8 @@ const colors = {
 
   tabBarBackground: "#1e1e1e",
   tabBarBorder: "#242424",
+
+  statusBarBackground: "#1e1e1e",
 };
 
 export const defaults = {
